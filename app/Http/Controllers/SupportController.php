@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 use App\Category;
 use App\Product;
-use App\Post;
+use App\support;
 use App\User;
-use App\discounts;
-use App\order;
 use App\transaction;
-use App\subscribe;
-use App\subscription;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Session\Store;
@@ -20,7 +16,7 @@ use Evryn\LaravelToman\Facades\Toman;
 use Evryn\LaravelToman\CallbackRequest;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
-class SubscribeController extends Controller
+class SupportController extends Controller
 {
     
     
@@ -38,31 +34,31 @@ class SubscribeController extends Controller
     public function create(Request $data){
 
         $this->validate($data, [
-            'subscribe_id' => ['required','exists:subscriptions,id'] ,
+            'user_id' => ['required','exists:users,id'] ,
+            'product_id' => ['required','exists:products,id'] ,
             'price' => ['required'],
-            'time' => ['required'],
         ]);
 
         if(Auth::check()){
 
-            $transaction=new transaction([
+            $transaction=new support([
 
                 'user_id' => Auth::user()->id,
                 'amount' => $data->input('price'),
+                'product_id' => $data->input('product_id'),
                 'status' => 'notpaid',
 
             ]);
 
             $transaction->save();
 
-            $trans=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
+            $trans=support::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
             
 
-                $order=new subscribe();
+                $order=new support();
                 $order->transaction_id = $trans->id ; 
-                $order->subscribe_id = $data->input('subscribe_id'); 
+                $order->product_id = $data->input('product_id'); 
                 $order->user_id = Auth::user()->id; 
-                $order->finish_date= Carbon::now()->addMonth($data->input('time')) ;
                 $order->status = 'notpaid' ; 
                 $order->save();
             
@@ -72,7 +68,7 @@ class SubscribeController extends Controller
             // Purchase and pay the given invoice.
             // You should use return statement to redirect user to the bank page.
             return Payment::callbackUrl('https://rravagh.com/payment/callbackss?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
-                $trans=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
+                $trans=support::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
                 $trans->transaction=$transactionId;
                 $trans->save();
             })->pay()->render();
@@ -84,7 +80,7 @@ class SubscribeController extends Controller
     public function callback(Request $request)
     {
       echo $_GET['trans'];
-        $trans=transaction::find($request->trans);
+        $trans=support::find($request->trans);
         echo $trans->id;
         $params = array(
           'id' =>  $trans->transaction,
@@ -108,14 +104,11 @@ class SubscribeController extends Controller
                 'uname' => 'ketabjang',
                 'pass' => 'ketab7976190',
                 'from' => '3000505',
-                'message' => 'اشتراک شما در سایت دیجی ریحان ثبت شد',
+                'message' => 'ممنون از حمایت شما',
 //                'message' => 'تست',
                 'to' => json_encode($rcpt_nm),
                 'op' => 'send'
             );
-            $order_check=subscribe::where('transaction_id' , $trans->id)->orderBy('created_at', 'desc')->FIRST();
-                $order_check->status='new';
-                $order_check->save();    
         
             $trans->save();
             return redirect()->route('payment.callback')->with('transaction', $trans->id)->with('info', $status);

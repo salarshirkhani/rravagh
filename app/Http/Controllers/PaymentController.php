@@ -110,7 +110,7 @@ class PaymentController extends Controller
             $invoice = (new Invoice)->amount($data->input('price'));
             // Purchase and pay the given invoice.
             // You should use return statement to redirect user to the bank page.
-            return Payment::callbackUrl('https://digireyhan.com/payment/callbacks?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
+            return Payment::callbackUrl('https://rravagh.com/payment/callbacks?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
                 $trans=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
                 $trans->transaction=$transactionId;
                 $trans->save();

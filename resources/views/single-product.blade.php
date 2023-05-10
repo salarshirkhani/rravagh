@@ -103,7 +103,7 @@
                                                     <div class="col-md-9">
                                                       شما می توانید برای حمایت از کتاب مورد نظر خود مبالغ زیر را انتخاب کرده و یا مبلغ مورد نظر خود را نوشته و پرداخت کنید
                                                       <form  action="#" method="post" style="margin-top:15px">
-                                                        <input type="hidden" name="id" value="{{ $item->id }}" >
+                                                        <input type="hidden" name="product_id" value="{{ $item->id }}" >
                                                         @isset( Auth::user()->id )
                                                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" >
                                                         @endisse
