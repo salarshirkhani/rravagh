@@ -46,6 +46,10 @@ Route::get('security', 'FrontController@security')->name('security');
 Route::post('subs','SubscribeController@create')->name('subs');
 Route::get('payment/callbackss', 'SubscribeController@callback')->name('payment.callbackss');
 
+//SUPPORT SYSTEM
+Route::post('supp','SupportController@create')->name('supp');
+Route::get('payment/scallbackss', 'SupportController@callback')->name('payment.scallbackss');
+
 //CART
 Route::get('cart', 'CartController@index')->name('cart');
 Route::post('cart','CartController@store')->name('cart.store'); 
