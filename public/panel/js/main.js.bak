@@ -1,0 +1,54 @@
+document.getElementById("defaultOpen").click();
+//menu hover effects
+var image = document.getElementById("image");
+  
+  
+  /*function mousehover1(){
+    document.getElementById("image").src = "http://webitofa.ir/dubaishop/images/Homeyel.svg";
+  }
+  function mouseunhover1(){
+    document.getElementById("image").src = "http://webitofa.ir/dubaishop/images/Home.svg";
+    }
+    function mousehover2(){
+    document.getElementById("image2").src = "http://webitofa.ir/dubaishop/images/Paperyel.svg";
+  }
+  function mouseunhover2(){
+    document.getElementById("image2").src = "http://webitofa.ir/dubaishop/images/Paper.svg";
+    }
+    function mousehover11(){
+      document.getElementById("image11").src = "http://webitofa.ir/dubaishop/images/Homeyel.svg";
+    }
+    function mouseunhover11(){
+      document.getElementById("image11").src = "http://webitofa.ir/dubaishop/images/Home.svg";
+      }
+      function mousehover22(){
+      document.getElementById("image22").src = "http://webitofa.ir/dubaishop/images/Paperyel.svg";
+    }
+    function mouseunhover22(){
+      document.getElementById("image22").src = "http://webitofa.ir/dubaishop/images/Paper.svg";
+      }*/
+
+
+          //show notifications
+          function shownotifs(){
+            if(document.getElementById("notifications").style.display == "none"){  
+                document.getElementById("notifications").style.display="block";
+                document.getElementById("latestheading").style.opacity = "0.5";
+            }
+          }
+          function hidenotifs(){
+            if(document.getElementById("notifications").style.display == "block"){  
+                document.getElementById("notifications").style.display = "none";
+                document.getElementById("latestheading").style.opacity = "1";
+            }
+        }
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "80%";
+          document.getElementById("mySidenav").style.display= "block"; 
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+          document.getElementById("mySidenav").style.display= "none";
+      
+        }
