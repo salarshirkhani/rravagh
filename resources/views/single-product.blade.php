@@ -104,9 +104,10 @@
                                                       شما می توانید برای حمایت از کتاب مورد نظر خود مبالغ زیر را انتخاب کرده و یا مبلغ مورد نظر خود را نوشته و پرداخت کنید
                                                       <form  action="{{route('supp')}}" method="post" style="margin-top:15px">
                                                         <input type="hidden" name="product_id" value="{{ $item->id }}" >
+                                                        @csrf
                                                         @isset( Auth::user()->id )
                                                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" >
-                                                        @endisse
+                                                        @endisset
                                                         <input type="radio" id="10000000" name="price" value="10000000">
                                                         <label for="10000000">یک میلیون تومان</label><br>
                                                         <input type="radio" id="15000000" name="price" value="15000000">
@@ -115,7 +116,7 @@
                                                         <label for="20000000">دو میلیون تومان</label>
                                                         <p>همچنین شما می توانید مبلغ مورد نظر خود را به ریال وارد کرده و پرداخت کنید</p>
                                                         <input type="number" class="form-control" name="price" placeholder="مبلغ مورد نظر خود را به ریال وارد کنید">
-                                                      </form>
+                                                      
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="prodpics">
@@ -141,8 +142,10 @@
                                             </div>                  
                                         </div>
                                         <div class="modal-footer justify-content-between">
-                                              <a href="#" class="btn btn-success btn-lg">حمایت از کتاب </a>
+                                              <button type="submit" class="btn btn-success btn-lg">حمایت از کتاب </button>
                                         </div>
+                                      </form>
+
                                       </div>
                                       <!-- /.modal-content -->
                                     </div>
