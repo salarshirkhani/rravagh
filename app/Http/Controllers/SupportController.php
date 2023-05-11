@@ -68,7 +68,7 @@ class SupportController extends Controller
             // Purchase and pay the given invoice.
             // You should use return statement to redirect user to the bank page.
             return Payment::callbackUrl('https://rravagh.com/ravaghh/payment/scallbackss?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
-                $trans=support::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
+                $trans=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
                 $trans->transaction=$transactionId;
                 $trans->save();
             })->pay()->render();
@@ -80,7 +80,7 @@ class SupportController extends Controller
     public function callback(Request $request)
     {
       echo $_GET['trans'];
-        $trans=support::find($request->trans);
+        $trans=transaction::find($request->trans);
         echo $trans->id;
         $params = array(
           'id' =>  $trans->transaction,
@@ -110,6 +110,10 @@ class SupportController extends Controller
                 'op' => 'send'
             );
         
+            $order_check=support::where('transaction_id' , $trans->id)->orderBy('created_at', 'desc')->FIRST();
+            $order_check->status='new';
+            $order_check->save();    
+    
             $trans->save();
             return redirect()->route('payment.callback')->with('transaction', $trans->id)->with('info', $status);
           
