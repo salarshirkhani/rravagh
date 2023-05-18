@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e333bd478dc5a9d2355ea94c2c5c0cac",
+    "content-hash": "7c35351e556500c2b5c1362f5bf2368c",
     "packages": [
         {
             "name": "artesaos/seotools",
@@ -2362,6 +2362,52 @@
                 "source": "https://github.com/morilog/jalali/tree/v3.2.0"
             },
             "time": "2020-12-01T21:26:31+00:00"
+        },
+        {
+            "name": "mr-apr/najva_push_notification",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MrApr/Najva-api.git",
+                "reference": "d3c338a98db92e720431c389a44679fd63634eee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MrApr/Najva-api/zipball/d3c338a98db92e720431c389a44679fd63634eee",
+                "reference": "d3c338a98db92e720431c389a44679fd63634eee",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.5",
+                "nesbot/carbon": "^2.28",
+                "php": ">=7.1.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Najva\\Src\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mr Apr",
+                    "email": "mamali0938@gmail.com"
+                }
+            ],
+            "description": "A package for sending Push notifications",
+            "support": {
+                "issues": "https://github.com/MrApr/Najva-api/issues",
+                "source": "https://github.com/MrApr/Najva-api/tree/v1.0.1"
+            },
+            "time": "2020-01-22T12:35:28+00:00"
         },
         {
             "name": "nesbot/carbon",

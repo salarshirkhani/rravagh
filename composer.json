@@ -24,6 +24,7 @@
         "laravel/ui": "^2.0",
         "mews/captcha": "^3.2",
         "morilog/jalali": "3.*",
+        "mr-apr/najva_push_notification": "^1.0",
         "nesbot/carbon": "^2.55",
         "pusher/pusher-php-server": "^4.1",
         "rinvex/laravel-subscriptions": "^4.0",

@@ -17,11 +17,40 @@
   <link rel="stylesheet" href="{{asset('css/main.css')}}">
   <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/flickity.min.css')}}">
-
+  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/manifest.json">
+  <!-- Najva Push Notification -->
+<script type="text/javascript">
+  (function(){
+       var now = new Date();
+       var version = now.getFullYear().toString() + "0" + now.getMonth() + "0" + now.getDate() +
+           "0" + now.getHours();
+       var head = document.getElementsByTagName("head")[0];
+       var link = document.createElement("link");
+       link.rel = "stylesheet";
+       link.href = "https://van.najva.com/static/cdn/css/local-messaging.css" + "?v=" + version;
+       head.appendChild(link);
+       var script = document.createElement("script");
+       script.type = "text/javascript";
+       script.async = true;
+       script.src = "https://van.najva.com/static/js/scripts/new-website233741-website-47658-3ba7571a-d302-4c41-9965-9992be2b551b.js" + "?v=" + version;
+       head.appendChild(script);
+       })()
+</script>
+<!-- END NAJVA PUSH NOTIFICATION -->
+  
+  
+  
   <meta name="theme-color" content="#fafafa">
 </head>
 
 <body>
+  @foreach ($banners->where('place','up')->take(1) as $item)
+  <div class="col-md-12">
+    <a class="middlebanner" href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}"></a>
+  </div>
+  @endforeach
   <header class="desktopheader">
     <div class="container">
       <div class="row">

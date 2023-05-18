@@ -53,6 +53,7 @@ class FrontController extends Controller
 
         return view('questions',[
             'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
     }
@@ -61,6 +62,7 @@ class FrontController extends Controller
 
         return view('rules',[
             'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
     }
@@ -69,6 +71,7 @@ class FrontController extends Controller
 
         return view('security',[
             'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
     }
@@ -81,6 +84,7 @@ class FrontController extends Controller
 
         return view('search',['posts' => $posts,
         'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+        'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
     }
 
@@ -133,6 +137,7 @@ class FrontController extends Controller
             return view('posttags',['products' => $posts,
                 'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->get(),
                 'writers' => color::orderBy('created_at', 'desc')->get(),
+                'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
             ]);
     }
 
@@ -140,10 +145,10 @@ class FrontController extends Controller
 
         SEOTools::setTitle('رواق');
         SEOTools::setDescription('مرجع فروش محصولات فرهنگی');
-        SEOTools::opengraph()->setUrl('http://digireyhan.com');
-        SEOTools::setCanonical('http://digireyhan.com');
+        SEOTools::opengraph()->setUrl('http://rravagh.com');
+        SEOTools::setCanonical('http://rravagh.com');
         SEOTools::opengraph()->addProperty('type', 'articles');
-        SEOTools::twitter()->setSite('@digireyhan');
+        SEOTools::twitter()->setSite('@rravagh');
       
       	if(Auth::check())
           $subscribe= subscribe::where('status' , 'new')->where('user_id' , Auth::user()->id)->where('finish_date' , '!=' , NULL)->where('finish_date','>',carbon::now())->orderBy('created_at', 'desc')->FIRST();
@@ -175,7 +180,7 @@ class FrontController extends Controller
             'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
           	'subscribe' => $subscribe,
             'promote' => $promote,
-
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
      ]);
 
     }
@@ -184,6 +189,7 @@ class FrontController extends Controller
 
         return view('contact',[
             'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
     }
@@ -192,6 +198,7 @@ class FrontController extends Controller
 
         return view('about',[
             'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
     }
@@ -206,7 +213,8 @@ class FrontController extends Controller
         return view('subscription',[
             'posts' => subscription::orderBy('created_at', 'desc')->get(),
             'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
-            'subscribe' => $subscribe
+            'subscribe' => $subscribe,
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
     }
@@ -218,6 +226,7 @@ class FrontController extends Controller
             return view('checkout',[ 
             'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
             'price'=> $data->price ,
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
             ])->with('info' , 'لطفا اطلاعات خود را دقیق وارد کنید');
         }
         else{
@@ -229,12 +238,12 @@ class FrontController extends Controller
 
     public function post($id) {
         $item=Post::find($id);
-        SEOTools::setTitle('دیجی ریحان'.$item->title);
+        SEOTools::setTitle('رواق'.$item->title);
         SEOTools::setDescription($item->explain);
-        SEOTools::opengraph()->setUrl('http://digireyhan.com');
-        SEOTools::setCanonical('http://digireyhan.com');
+        SEOTools::opengraph()->setUrl('http://rravagh.com');
+        SEOTools::setCanonical('http://rravagh.com');
         SEOTools::opengraph()->addProperty('type', 'articles');
-        SEOTools::twitter()->setSite('@digireyhan');
+        SEOTools::twitter()->setSite('@rravagh');
         return view('single-post',[
             'item' => $item,
             'posts' => Post::orderBy('created_at', 'desc')->LIMIT(3)->get(),
@@ -242,6 +251,7 @@ class FrontController extends Controller
             'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
             'writers' => color::orderBy('created_at', 'desc')->get(),
             'tags' => post_tag::where('post_id',$item->id)->orderBy('created_at', 'desc')->get(),
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
     }
@@ -251,7 +261,7 @@ class FrontController extends Controller
         return view('blog',[
             'posts' => Post::orderBy('created_at', 'desc')->get(),
             'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->get(),
-
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
     }
@@ -306,12 +316,12 @@ class FrontController extends Controller
 
         //$pros=array();
         $category=Category::where('slug' , $slug)->FIRST();
-        SEOTools::setTitle('دیجی ریحان -'.$category->name);
+        SEOTools::setTitle(' رواق -'.$category->name);
         SEOTools::setDescription($category->desccription);
-        SEOTools::opengraph()->setUrl('http://digireyhan.com/category/'.$slug);
-        SEOTools::setCanonical('http://digireyhan.com');
+        SEOTools::opengraph()->setUrl('http://rravagh.com/category/'.$slug);
+        SEOTools::setCanonical('http://rravagh.com');
         SEOTools::opengraph()->addProperty('type', 'articles');
-        SEOTools::twitter()->setSite('@digireyhan');
+        SEOTools::twitter()->setSite('@rravagh');
       	if(Auth::check())
            $subscribe= subscribe::where('status' , 'new')->where('user_id' , Auth::user()->id)->where('finish_date' , '!=' , NULL)->where('finish_date','>',carbon::now())->orderBy('created_at', 'desc')->FIRST();
         else
@@ -375,12 +385,12 @@ class FrontController extends Controller
         $item=Product::find($id);
         $related_products = Product::inRandomOrder()->where('category', $item->category)->limit(6)->get();
         $comments = comment::where('product_id',$id)->orderBy('created_at', 'desc')->get();
-        SEOTools::setTitle(' دیجی ریحان-'.$item->name);
+        SEOTools::setTitle(' رواق-'.$item->name);
         SEOTools::setDescription($item->explain);
-        SEOTools::opengraph()->setUrl('http://digireyhan.com');
-        SEOTools::setCanonical('http://digireyhan.com');
+        SEOTools::opengraph()->setUrl('http://rravagh.com');
+        SEOTools::setCanonical('http://rravagh.com');
         SEOTools::opengraph()->addProperty('type', 'articles');
-        SEOTools::twitter()->setSite('@digireyhan');
+        SEOTools::twitter()->setSite('@rravagh');
         if(Auth::check())
           $subscribe= subscribe::where('status' , 'new')->where('user_id' , Auth::user()->id)->where('finish_date' , '!=' , NULL)->where('finish_date','>',carbon::now())->orderBy('created_at', 'desc')->FIRST();
         else
@@ -394,6 +404,7 @@ class FrontController extends Controller
             'idd' => 0,
             'tags' => product_tag::where('product_id',$item->id)->orderBy('created_at', 'desc')->get(),
             'subscribe' =>  $subscribe, 
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
     }
