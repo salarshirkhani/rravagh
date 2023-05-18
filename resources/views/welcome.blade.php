@@ -244,8 +244,8 @@
     <div class="deskvisd">
       <div class="firstset">
         <div class="carouseltitle">
-          <h2>آخرین محصولات</h2>
-          <p>آخرین محصولات رواق را در اینجا مشاهده کنید.</p>
+          <h2>ببینید</h2>
+          <p>بازتاب حرف های شما</p>
           <a href="" class="morebtn">مشاهده همه<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M20.2135 8.075L12.4531 15.95L20.2135 23.825" stroke="white" stroke-width="2"/>
             </svg>

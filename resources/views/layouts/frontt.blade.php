@@ -38,13 +38,14 @@
        head.appendChild(script);
        })()
 </script>
-<!-- END NAJVA PUSH NOTIFICATION -->
-  
-  
-  
+<!-- END NAJVA PUSH NOTIFICATION --> 
   <meta name="theme-color" content="#fafafa">
 </head>
-
+<style>
+.menu ul li {
+    padding: 0 13px;
+}
+</style>
 <body>
   @foreach ($banners->where('place','up')->take(1) as $item)
   <div class="col-md-12">
@@ -75,6 +76,8 @@
                  </ul>
                 </li>
               <li><a href="{{route('blog')}}">مقالات</a></li>
+              <li><a href="{{route('/')}}">آموزش</a></li>
+              <li><a href="{{route('blog')}}">حمایت از کتاب</a></li>
               <li><a href="{{route('about')}}">درباره ما</a></li>
               <li><a href="{{route('contact')}}">تماس با ما</a></li>
               <li><a href="">فیلم‌ها</a></li>
