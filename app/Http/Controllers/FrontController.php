@@ -126,7 +126,7 @@ class FrontController extends Controller
                 'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
             ]);
     }
-  
+    
     public function posttags(Request $request)
     {
         $this->validate($request, [
@@ -134,9 +134,10 @@ class FrontController extends Controller
         ]);
 
             $posts = post_tag::where('name', 'LIKE', '%'. $this->escape_like($request['q']) . '%')->paginate(8);
-            return view('posttags',['products' => $posts,
+            return view('posttags',['posts' => $posts,
                 'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->get(),
                 'writers' => color::orderBy('created_at', 'desc')->get(),
+                'tag'=>$request['q'],
                 'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
             ]);
     }

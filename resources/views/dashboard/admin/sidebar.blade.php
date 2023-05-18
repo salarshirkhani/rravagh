@@ -16,3 +16,4 @@
 <x-sidebar-item title="مدیریت فایل ها" icon="fas fa-folder" route="dashboard.admin.uploader.manage" />
 <x-sidebar-item title="مدیریت فروش" icon="far fa-handshake" route="dashboard.admin.orders.manage" />
 <x-sidebar-item title="تراکنش ها" icon="fas fa-money-check-alt" route="dashboard.admin.transaction.manage" />
+<x-sidebar-item title="پاک کردن کش" icon="fas fa-money-check-alt" route="dashboard.admin.clear-cache" />

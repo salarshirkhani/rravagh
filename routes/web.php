@@ -37,7 +37,6 @@ Route::get('tags', 'FrontController@tags')->name('tags');
 Route::get('posttags', 'FrontController@posttags')->name('posttags');
 Route::post('promot', 'FrontController@promot')->name('promot');
 Route::get('subscription', 'FrontController@subscription')->name('subscription');
-
 Route::get('questions', 'FrontController@questions')->name('questions');
 Route::get('rules', 'FrontController@rules')->name('rules');
 Route::get('security', 'FrontController@security')->name('security');
@@ -204,6 +203,16 @@ Route::prefix('dashboard')
                 //Category Controller 
                 Route::resource("categories", "CategoryController");
                 Route::get('deletecat/{id}','CategoryController@delete')->name('categories.deletecat'); 
+
+                 // Clear application cache
+                Route::get('/clear-cache', function () {
+                    Artisan::call('cache:clear');
+                    Artisan::call('route:clear');
+                    Artisan::call('config:cache');
+                    Artisan::call('view:clear');
+                    Artisan::call('optimize:clear');
+                    return "Cache cleared successfully";
+                })->name('clear-cache');
 
 
  //------MOVIE ADMIN CONTROLLER----- 
