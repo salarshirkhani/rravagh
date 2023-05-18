@@ -193,11 +193,11 @@
       </div>
     </div>
     @endforeach
-    <div class="midlebanners">
+    <div class="midlebanners" style="">
       <div class="row">
         @foreach ($banners->where('place','center')->take(4) as $item)
         <div class="col-md-6">
-          <a class="middlebanner" href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" style="width:95%; border-radius:10px;" alt="{{$item->title}}"></a>
+          <a class="middlebanner" href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" style="width:95%; border-radius:10px;margin-top:20px" alt="{{$item->title}}"></a>
         </div>
         @endforeach
       </div>
