@@ -4,10 +4,10 @@
   <div class="container">
     <div class="row">
       <div class="col-md-8">
-        <div class="main-carousel" data-flickity='{ "wrapAround": false, "freScroll":true, "autoPlay": 3000, "pauseAutoPlayOnHover": true  }'>
+        <div class="main-carousel" style="width:100%;" data-flickity='{ "wrapAround": false, "freScroll":true, "autoPlay": 3000, "pauseAutoPlayOnHover": true  }'>
           @foreach ($banners->where('place','slider') as $item)
           <div class="carousel-cell">           
-            <a href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}"></a>
+            <a href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}" style="width:100%;"></a>
           </div>
           @endforeach
         </div>
@@ -15,7 +15,7 @@
       <div class="col-md-4">
         <div class="mainsides">
           @foreach ($banners->where('place','side') as $item)
-            <a href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}" style="max-width: 410px;"></a>
+            <a href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}" style="max-width: 410px; margin-bottom:10px;"></a>
           @endforeach
         </div>
       </div>
@@ -197,7 +197,7 @@
       <div class="row">
         @foreach ($banners->where('place','center')->take(4) as $item)
         <div class="col-md-6">
-          <a class="middlebanner" href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}"></a>
+          <a class="middlebanner" href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" style="width:100%;" alt="{{$item->title}}"></a>
         </div>
         @endforeach
       </div>

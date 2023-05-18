@@ -49,7 +49,7 @@
 <body>
   @foreach ($banners->where('place','up')->take(1) as $item)
   <div class="col-md-12">
-    <a class="middlebanner" href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}"></a>
+    <a class="middlebanner" href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}" style="width:100%;"></a>
   </div>
   @endforeach
   <header class="desktopheader">
