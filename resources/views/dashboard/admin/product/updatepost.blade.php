@@ -115,6 +115,11 @@
                 </table>
             </div>
             <div style="margin-top:40px;"></div>
+            <input type="checkbox" id="lovely" name="lovely" value="yes">
+            <label for="lovely">اضافه کردن در بهترین ها</label><br>
+            <input type="checkbox" id="cheap" name="cheap" value="yes">
+            <label for="cheap">اضافه کردن در شگفت انگیز</label><br>
+            <div style="margin-top:40px;"></div>
             <h3 style="font-size:20px">تصاویر</h3>   
             <label for="pic">تصویر اصلی محصول</label><br>
             <img style="width:300px; height:300px;" src="{{ asset('pics/'.$post['pic'].'/'.$post['pic'] ) }}">
