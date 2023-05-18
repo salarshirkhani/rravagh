@@ -77,7 +77,7 @@
                 </li>
               <li><a href="{{route('blog')}}">مقالات</a></li>
               <li><a href="{{route('/')}}">آموزش</a></li>
-              <li><a href="{{route('blog')}}">حمایت از کتاب</a></li>
+              <li><a href="{{route('discountable')}}">حمایت از کتاب</a></li>
               <li><a href="{{route('about')}}">درباره ما</a></li>
               <li><a href="{{route('contact')}}">تماس با ما</a></li>
               <li><a href="">فیلم‌ها</a></li>
