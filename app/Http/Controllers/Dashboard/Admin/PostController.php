@@ -70,6 +70,13 @@ class PostController extends Controller
         return redirect()->route('dashboard.admin.news.manage')->with('info', 'پست پاک شد');
     }
 
+    public function DeleteTag($id){
+        $item = post_tag::find($id);
+        $item->delete();
+        return redirect()->back()->with('info', 'تگ پاک شد');
+    }
+
+
     public function GetEditPost($id)
     { 
         $post = post::find($id);
