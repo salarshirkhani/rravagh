@@ -88,6 +88,7 @@
             </div>            
         </div>
         <div class="col-md-3">
+          <!--
             <div class="side-1">
               <div class="sidehead">
                 <h4>جست و جو در مجله</h4>
@@ -110,21 +111,19 @@
                   </ul>
                 </div>
               </div>
+               -->
             <div class="side-3">
                 <div class="sidehead">
                   <h4>بنرها</h4>
                 </div>
                 <div class="sidebody">
                   <ul>
-                      <!--
-                    <li><a href="{{route('/')}}/promotion"><img src="{{asset('img/BANNER1.jpg')}}" alt=""></a></li>
-                  <li><a href="{{route('/')}}/promotion"><img src="{{asset('img/banner-pooyesh.jpg')}}" alt=""></a></li>
-                  
-                  -->
+                    @foreach ($banners->where('place','blog') as $item)    
+                    <li><a href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}" style="width:100%;"></a></li>  
+                    @endforeach
                   </ul>
                 </div>
               </div>
-
           </div>
     </div>
 </div>
