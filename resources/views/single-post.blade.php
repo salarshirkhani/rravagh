@@ -113,9 +113,7 @@
               </div>
                -->
             <div class="side-3">
-                <div class="sidehead">
-                  <h4>بنرها</h4>
-                </div>
+
                 <div class="sidebody">
                   <ul>
                     @foreach ($banners->where('place','blog') as $item)    
