@@ -95,7 +95,8 @@ Route::prefix('dashboard')
                 Route::get('news/manage', 'PostController@GetManagePost')->name('news.manage');
                 Route::get('deletepost/{id}','PostController@DeletePost')->name('news.deletepost');  
                 Route::get('updatepost/{id}','PostController@GetEditPost')->name('news.updatepost');
-                Route::post('updatepost/{id}','PostController@UpdatePost')->name('news.updatepost');
+                Route::post('updatepost/{id}','PostController@UpdatePost')->name('news.updatepost');\
+                Route::get('ndeletetags/{ids}','PostController@DeleteTag')->name('news.ndeletetags');
 
                 //NOTIFICATION CONTROLLER
                 Route::post('notification/create', ['uses' => 'NotificationController@CreatePost','as' => 'notification.create' ]);
