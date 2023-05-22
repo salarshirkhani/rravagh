@@ -1225,8 +1225,7 @@ transition: 0.3s;
   width: 100%;
 }
 .addcomment input[type="submit"] {
-  background: #0f4b76;
-  background-color: rgb(15, 75, 118);
+  background: #ec2525;
   padding: 15px 30px;
   border: none;
   border-radius: 5px;
@@ -1860,6 +1859,28 @@ width: 65%;
 }
 .carousel-cell {
   width: 40%;
+}
+.main-carousel .carousel-cell {
+  width: fit-content;
+}
+.main-carousel .flickity-slider{
+    transform: translateX(30%);
+    text-align: center;
+    margin: auto;
+    left: auto;
+    right: auto;
+    margin: auto;
+    margin-right: 105px;
+    width: 100%;
+}
+.main-carousel .flickity-viewport{
+    height:200px;
+}
+.namepl {
+  margin-top: 20px;
+}
+.addcomment input[type="submit"]{
+    margin-top:20px;
 }
  .blogimg img {
   width: 100%;
