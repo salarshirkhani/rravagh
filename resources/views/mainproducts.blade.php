@@ -5,7 +5,7 @@
       <div class="main-carousel" data-flickity='{ "wrapAround": false, "freScroll":true, "autoPlay": 3000, "pauseAutoPlayOnHover": true  }'>
         @foreach ($banners->where('place','slider') as $item)
         <div class="carousel-cell">
-          <a href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}"></a>
+          <a href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" style="width:100%;" alt="{{$item->title}}"></a>
         </div>
         @endforeach
       </div>
