@@ -60,7 +60,7 @@
                                 <tbody>
                              @foreach($posts as $item)
                                 <tr>
-                                    <td>https://rravagh.com/ravaghh/{{ $item->link }}/{{ $item->link }}</td>
+                                    <td>https://rravagh.com/ravaghh/pics/{{ $item->link }}/{{ $item->link }}</td>
                                     <td><img src="{{ asset('pics/'.$item['link'].'/'.$item['link'] ) }}" style="width:120px;" ></td>
                                     <td>
                                     <a href="{{route('dashboard.admin.uploader.deleteupload',['id'=>$item->id])}}" class="delete_post" ><i class="fa fa-fw fa-eraser"></i></a>                 
