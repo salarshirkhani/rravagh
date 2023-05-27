@@ -47,11 +47,12 @@
                        </script>
                          {{ csrf_field() }}
                          <button type="submit" style="height: 42px;font-size: 20px;"  class="btn btn-success">ارسال فایل</button>
-                         </form>
+                    </form>
                     <div class="box-body">
                         <table id="example1" class="table table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th>#</th>
                                 <th>آدرس</th>
                                 <th>تصویر</th>
                                 <th>حذف</th>                               
@@ -60,6 +61,7 @@
                                 <tbody>
                              @foreach($posts as $item)
                                 <tr>
+                                    <td>{{ $item->id }}</td>
                                     <td>https://rravagh.com/ravaghh/pics/{{ $item->link }}/{{ $item->link }}</td>
                                     <td><img src="{{ asset('pics/'.$item['link'].'/'.$item['link'] ) }}" style="width:120px;" ></td>
                                     <td>
@@ -70,6 +72,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
+                                    <th>#</th>
                                     <th>آدرس</th>
                                     <th>تصویر</th>
                                     <th>حذف</th>      
