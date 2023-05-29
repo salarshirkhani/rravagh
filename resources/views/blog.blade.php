@@ -1,5 +1,10 @@
 @extends('layouts.frontt')
 @section('content')
+<style>
+    .blogs a {
+    bottom: 0px;
+    }
+</style>
 <div class="container">
     <h2 class="bloghead">وبلاگ</h2>
     @foreach ($posts as $item)   
