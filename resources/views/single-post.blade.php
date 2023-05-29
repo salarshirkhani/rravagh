@@ -11,6 +11,9 @@
     background: #0f4b76 !important;
     background-color: rgb(15, 75, 118) !important;
     }
+    .sidehead {
+    background-color: #121864;
+    }
 </style>
 <section class="content2">
     <div class="container">
