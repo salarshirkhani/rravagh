@@ -14,6 +14,9 @@
     .sidehead {
     background-color: #121864;
     }
+    @media only screen and (max-width: 700px) {
+      img{width:100% !important;}
+    }
 </style>
 <section class="content2">
     <div class="container">
