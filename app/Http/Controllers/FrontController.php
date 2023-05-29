@@ -239,7 +239,7 @@ class FrontController extends Controller
 
     public function post($id) {
         $item=Post::find($id);
-        SEOTools::setTitle('رواق'.$item->title);
+        SEOTools::setTitle(' رواق -'.$item->title);
         SEOTools::setDescription($item->explain);
         SEOTools::opengraph()->setUrl('http://rravagh.com');
         SEOTools::setCanonical('http://rravagh.com');
@@ -386,7 +386,7 @@ class FrontController extends Controller
         $item=Product::find($id);
         $related_products = Product::inRandomOrder()->where('category', $item->category)->limit(6)->get();
         $comments = comment::where('product_id',$id)->orderBy('created_at', 'desc')->get();
-        SEOTools::setTitle(' رواق-'.$item->name);
+        SEOTools::setTitle(' رواق -'.$item->name);
         SEOTools::setDescription($item->explain);
         SEOTools::opengraph()->setUrl('http://rravagh.com');
         SEOTools::setCanonical('http://rravagh.com');
