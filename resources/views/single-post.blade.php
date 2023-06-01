@@ -23,9 +23,9 @@
         <div class="row">
             <div class="col-md-9">
             <div class="blogorg">
-                <h3 style="font-weight: 900;">{{$item->title}}</h3>
-				<p class="authorname">نویسنده: {{$item->writer}}</p>
+                <p class="authorname">نویسنده: {{$item->writer}}</p>
                 <p class="blogdate" style="color: gray;">{{ Facades\Verta::instance($item->created_at)->format('Y/n/j')}}</p>
+                <h3 style="font-weight: 900; clear:both">{{$item->title}}</h3>
                 <img src="{{ asset('pics/'.$item['pic'].'/'.$item['pic'] ) }}" alt="{{$item->title}}">
                 <div class="blogtext">
                   @isset($item->iframe)
@@ -120,7 +120,7 @@
                -->
             <div class="side-3" style="margin-top: 70px;">
                 <div class="sidehead">
-                  <h4>بنرها</h4>
+                  <h4>محتوای مرتبط</h4>
                 </div>
                 <div class="sidebody">
                   <ul>
