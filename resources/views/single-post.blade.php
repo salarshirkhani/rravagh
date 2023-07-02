@@ -8,8 +8,8 @@
      background: #f0f0f0 !important;   
     }
     .addcomment input[type="submit"] {
-    background: #0f4b76 !important;
-    background-color: rgb(15, 75, 118) !important;
+    background: #ec2525 !important;
+
     }
     .sidehead {
     background-color: #121864;
@@ -17,6 +17,11 @@
     @media only screen and (max-width: 700px) {
       img{width:100% !important;}
     }
+    .blogtext {
+    text-align: right;
+    text-align-last: right;
+    }
+
 </style>
 <section class="content2">
     <div class="container">
@@ -85,7 +90,18 @@
                               <textarea id="yourcomment" name="content" rows="4" required></textarea>
                           </div>
                       </div>
-                     <div class="g-recaptcha" data-sitekey="6LfOX1YhAAAAALbrLeOGqemecG9PE6pmrx_tAYXJ"></div>
+                      <div class="col-md-4">
+                        <div style="border: 1px solid rgb(160, 160, 255); border-radius:10px; padding:7px;">
+                            <img src="{!!Captcha::src('default')!!}" style="width:60%; display:block; margin-left:auto; margin-right:auto; margin-bottom:5px;">
+                            <div class="wrap-input100 validate-input" data-validate="کپچا به درستی وارد نشده است">
+                                <input type="text" name="captcha" class=" input100" placeholder="کد کپچا" id="id_capctha" required>
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                      </div>
                       <div class="col-md-12">
                           <input type="submit" value="فرستادن دیدگاه">
                       </div>

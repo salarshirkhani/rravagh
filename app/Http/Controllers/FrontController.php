@@ -461,6 +461,7 @@ class FrontController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'description' => $request->input('content'),
+            'captcha' => 'required|Captcha',
         ]);
         $post->save();
         return redirect()->back()->with('info', 'نظر شما ثبت شد');
