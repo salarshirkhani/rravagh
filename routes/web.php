@@ -45,10 +45,6 @@ Route::get('security', 'FrontController@security')->name('security');
 Route::post('subs','SubscribeController@create')->name('subs');
 Route::get('payment/callbackss', 'SubscribeController@callback')->name('payment.callbackss');
 
-//SUPPORT SYSTEM
-Route::post('supp','SupportController@create')->name('supp');
-Route::get('payment/scallbackss', 'SupportController@callback')->name('payment.scallbackss');
-
 //CART
 Route::get('cart', 'CartController@index')->name('cart');
 Route::post('cart','CartController@store')->name('cart.store'); 
@@ -62,6 +58,9 @@ Route::get('payment/callback', 'PaymentController@callbacks')->name('payment.cal
 //LIKE
 Route::post('like','LikeController@Like')->name('like'); 
 
+//HELP SYSTEM
+Route::post('help','HelpController@create')->name('help');
+Route::get('payment/scallbacksh', 'HelpController@callback')->name('payment.scallbacksh');
 
 Route::prefix('media')
 ->name('media.')

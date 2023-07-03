@@ -200,7 +200,7 @@
                         }
                     };
 
-                    Dropzone.options.dropzone =
+                Dropzone.options.dropzone =
                     {
                         maxFilesize: 12,
                         renameFile: function(pic) {

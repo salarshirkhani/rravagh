@@ -9,7 +9,7 @@ class support extends Model
     protected $table='support';
 
     protected $fillable = [
-        'user_id', 'product_id', 'transaction', 'status', 'amount','transaction_id',
+        'user_id', 'product_id', 'transaction', 'status', 'amount',
     ];
 
     public function person() {

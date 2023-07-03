@@ -102,21 +102,45 @@
                                                 <div class="row">
                                                     <div class="col-md-9">
                                                       شما می توانید برای حمایت از کتاب مورد نظر خود مبالغ زیر را انتخاب کرده و یا مبلغ مورد نظر خود را نوشته و پرداخت کنید
-                                                      <form  action="{{route('supp')}}" method="post" style="margin-top:15px">
+                                                      <form  action="{{route('help')}}" method="post" style="margin-top:15px">
+                                                        @isset(Auth::user()->id)
                                                         <input type="hidden" name="product_id" value="{{ $item->id }}" >
                                                         @csrf
                                                         @isset( Auth::user()->id )
                                                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" >
                                                         @endisset
-                                                        <input type="radio" id="10000000" name="price" value="10000000">
+                                                        <input type="radio" id="10000000" name="price1" onchange="addValueToRadioBtn();" value="10000000">
                                                         <label for="10000000">یک میلیون تومان</label><br>
-                                                        <input type="radio" id="15000000" name="price" value="15000000">
+                                                        <input type="radio" id="15000000" name="price1" onchange="addValueToRadioBtn();" value="15000000">
                                                         <label for="15000000">یک میلیون و پانصد هزار تومان</label><br>
-                                                        <input type="radio" id="20000000" name="price" value="20000000">
-                                                        <label for="20000000">دو میلیون تومان</label>
+                                                        <input type="radio" id="20000000" name="price1" onchange="addValueToRadioBtn();" value="20000000">
+                                                        <label for="20000000">دومیلیون تومان</label><br>
+                                                        <input type="radio" style="margin-right: 5px;" id="amntother" name="price1" value="">
+                                                        <label for="amntother">مبالغ دیگر</label>
                                                         <p>همچنین شما می توانید مبلغ مورد نظر خود را به ریال وارد کرده و پرداخت کنید</p>
-                                                        <input type="number" class="form-control" name="price" placeholder="مبلغ مورد نظر خود را به ریال وارد کنید">
-                                                      
+                                                        <input type="number" class="form-control" id="otherAmount"  name="price" value="" placeholder="مبلغ مورد نظر خود را به ریال وارد کنید">
+                                                        <script>  
+                                                            function addValueToRadioBtn() {
+                                                                if (document.getElementById("amntother").checked == true){
+                                                                    document.getElementById("otherAmount").value = document.getElementById("amntother").value ;
+                                                                }
+                                                                if (document.getElementById("20000000").checked == true){
+                                                                    document.getElementById("otherAmount").value = document.getElementById("20000000").value ;
+                                                                }
+                                                                if (document.getElementById("15000000").checked == true){
+                                                                    document.getElementById("otherAmount").value = document.getElementById("15000000").value ;
+                                                                }
+                                                                if (document.getElementById("10000000").checked == true){
+                                                                    document.getElementById("otherAmount").value = document.getElementById("10000000").value ;
+                                                                }
+                                                                //added an alert box just to test that the value has been updated
+                                                                
+                                                            }                                                 
+                                                        </script>
+                                                        @else
+                                                            <p class="alert alert-warning">شما باید برای حمایت از کتاب در سایت ثبت نام کرده باشید</p>
+                                                            <a href="{{route('register')}}" class="btn btn-primary">ثبت نام و ورود به سایت </a>
+                                                        @endisset
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="prodpics">
@@ -141,9 +165,11 @@
                                                 </div>
                                             </div>                  
                                         </div>
+                                        @isset(Auth::user()->id)
                                         <div class="modal-footer justify-content-between">
                                               <button type="submit" class="btn btn-success btn-lg">حمایت از کتاب </button>
                                         </div>
+                                        @endisset
                                       </form>
 
                                       </div>

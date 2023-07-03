@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 use App\Category;
 use App\Product;
-use App\support;
+use App\Post;
 use App\User;
-use App\transaction;
-use Carbon\Carbon;
+use App\discounts;
+use App\order;
+use App\support;
 use Illuminate\Http\Request;
 use Illuminate\Session\Store;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -16,13 +17,13 @@ use Evryn\LaravelToman\Facades\Toman;
 use Evryn\LaravelToman\CallbackRequest;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
-class SupportController extends Controller
+use GuzzleHttp\Client;
+class HelpController extends Controller
 {
-    
-    
+ 
     public function callbacks() {
 
-        $transaction=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->FIRST();
+        $transaction=support::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->FIRST();
         return view('callback',[ 
             'transaction' => $transaction,
             'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
@@ -30,13 +31,11 @@ class SupportController extends Controller
         
     }
     
-
     public function create(Request $data){
 
         $this->validate($data, [
-            'user_id' => ['required','exists:users,id'] ,
-            'product_id' => ['required','exists:products,id'] ,
-            'price' => ['required'],
+            'price' => ['required', 'string', 'max:255'] ,
+            'product_id' => ['required','exists:products,id'],
         ]);
 
         if(Auth::check()){
@@ -47,29 +46,19 @@ class SupportController extends Controller
                 'amount' => $data->input('price'),
                 'product_id' => $data->input('product_id'),
                 'status' => 'notpaid',
-
             ]);
 
             $transaction->save();
 
             $trans=support::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
             
-
-                $order=new support();
-                $order->transaction_id = $trans->id ; 
-                $order->product_id = $data->input('product_id'); 
-                $order->user_id = Auth::user()->id; 
-                $order->status = 'notpaid' ; 
-                $order->save();
-            
-            
             // Create new invoice.
             $invoice = (new Invoice)->amount($data->input('price'));
             // Purchase and pay the given invoice.
             // You should use return statement to redirect user to the bank page.
-            return Payment::callbackUrl('https://rravagh.com/ravaghh/payment/scallbackss?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
-                $trans=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
-                $trans->transaction=$transactionId;
+            return Payment::callbackUrl('https://rravagh.com/ravaghh/payment/callbacksh?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
+                $trans=support::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
+                $trans->transaction=$transactionId; 
                 $trans->save();
             })->pay()->render();
 
@@ -79,9 +68,7 @@ class SupportController extends Controller
 
     public function callback(Request $request)
     {
-      echo $_GET['trans'];
-        $trans=transaction::find($request->trans);
-        echo $trans->id;
+        $trans=support::find($request->trans);
         $params = array(
           'id' =>  $trans->transaction,
           'order_id' => $trans->id ,
@@ -96,31 +83,34 @@ class SupportController extends Controller
             $status='paid';
             $trans->invoice_code=$trans->transaction;
             $transaction=$trans->transaction;
-                    $url = "https://ippanel.com/services.jspd";
+            $trans->save();
+        
+            $details = [
+                   'title' => 'ایمیل از سایت  رواق',
+                   'message' => 'کمک هزینه جدیدی در سایت رواق ثبت شد',
+                    'link' => 'https://rravagh.com'
+            ];
+
+            \Mail::to('salarshirkhany16@gmail.com')->send(new \App\Mail\order($details));
+            
+
+            $url = "https://ippanel.com/services.jspd";
 
             $rcpt_nm = array(Auth::user()->mobile, '09372833776');
             $param = array
             (
-                'uname' => 'ketabjang',
-                'pass' => 'ketab7976190',
-                'from' => '3000505',
-                'message' => 'ممنون از حمایت شما',
+               'uname' => 'ketabjang',
+               'pass' => 'ketab7976190',
+               'from' => '3000505',
+                'message' => 'سفارش جدیدی در سایت  دیجی ریحان ثبت شد',
 //                'message' => 'تست',
-                'to' => json_encode($rcpt_nm),
+               'to' => json_encode($rcpt_nm),
                 'op' => 'send'
             );
-        
-            $order_check=support::where('transaction_id' , $trans->id)->orderBy('created_at', 'desc')->FIRST();
-            $order_check->status='new';
-            $order_check->save();    
-    
-            $trans->save();
             return redirect()->route('payment.callback')->with('transaction', $trans->id)->with('info', $status);
           
           } 
       catch (InvalidPaymentException $exception) {
-
-          echo $exception->getMessage();
 
            return redirect()->route('payment.callback');
       }
