@@ -34,11 +34,12 @@ class HelpController extends Controller
     public function create(Request $data){
 
         $this->validate($data, [
-            'price' => ['required', 'string', 'max:255'] ,
+            'price' => ['required'] ,
             'product_id' => ['required','exists:products,id'],
+            'maxvalue' => ['required'] ,
         ]);
 
-        if(Auth::check()){
+        if(Auth::check() && $data->input('price') <= $data->input('maxvalue')){
 
             $transaction=new support([
 
@@ -63,6 +64,9 @@ class HelpController extends Controller
             })->pay()->render();
 
      }
+     else{
+        return redirect()->back()->with('info' , 'مقدار کمک شما از حداکثر مقدار کمک بیشتر است');
+     }
 
     }
 
@@ -83,6 +87,17 @@ class HelpController extends Controller
             $status='paid';
             $trans->invoice_code=$trans->transaction;
             $transaction=$trans->transaction;
+
+            $product=product::orderBy('created_at', 'desc')->where('product_id' , $trans->product_id)->FIRST();
+
+            if(isset($product->helpprice))
+                $finalprice=((($product->helpprice * $product->inventory)-$trans->amount)/$product->inventory);
+            else
+                $finalprice=((($product->price * $product->inventory)-$trans->amount)/$product->inventory);
+
+            $product->helpprice=$finalprice;
+            $product->save();
+
             $trans->save();
         
             $details = [
@@ -107,6 +122,9 @@ class HelpController extends Controller
                'to' => json_encode($rcpt_nm),
                 'op' => 'send'
             );
+
+            
+
             return redirect()->route('payment.callback')->with('transaction', $trans->id)->with('info', $status);
           
           } 

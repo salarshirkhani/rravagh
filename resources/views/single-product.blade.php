@@ -78,7 +78,6 @@
                         <rect x="5.25" y="14.25" width="31.5" height="3.16667" fill="white"/>
                         </svg>
                         سفارش و ارسال</a>
-                     @endif
                         <a href="#" data-toggle="modal" data-target="#modal-success{{ $item->id }}" class="supportbtn">
                           <svg width="42" height="38" viewBox="0 0 42 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5.25 13.5C5.25 11.6144 5.25 10.6716 5.83579 10.0858C6.42157 9.5 7.36438 9.5 9.25 9.5H32.75C34.6356 9.5 35.5784 9.5 36.1642 10.0858C36.75 10.6716 36.75 11.6144 36.75 13.5V24.5C36.75 26.3856 36.75 27.3284 36.1642 27.9142C35.5784 28.5 34.6356 28.5 32.75 28.5H9.25C7.36438 28.5 6.42157 28.5 5.83579 27.9142C5.25 27.3284 5.25 26.3856 5.25 24.5V13.5Z" fill="#222852" fill-opacity="0.25"/>
@@ -87,6 +86,7 @@
                           </svg>
                           حمایت از کتاب                            
                         </a>
+                        @endif
                         <!-- SHOW SUCCESS modal -->
                                 <div class="modal fade show" id="modal-success{{ $item->id }}" aria-modal="true" role="dialog">
                                     <div class="modal-dialog modal-danger">
@@ -102,9 +102,21 @@
                                                 <div class="row">
                                                     <div class="col-md-9">
                                                       شما می توانید برای حمایت از کتاب مورد نظر خود مبالغ زیر را انتخاب کرده و یا مبلغ مورد نظر خود را نوشته و پرداخت کنید
+                                                      <br>
+                                                      حداکثر مقدار قابل کمک برای این کتاب
+                                                      @php 
+                                                      if(isset($item->helpprice)){
+                                                        $helpprice=$item->helpprice * $item->inventory;
+                                                      }
+                                                      else{
+                                                        $helpprice=$item->price * $item->inventory;
+                                                      }                                      
+                                                      @endphp
+                                                      <?php echo number_format($helpprice); ?> تومان
                                                       <form  action="{{route('help')}}" method="post" style="margin-top:15px">
                                                         @isset(Auth::user()->id)
                                                         <input type="hidden" name="product_id" value="{{ $item->id }}" >
+                                                        <input type="hidden" name="maxvalue" value="{{$helpprice}}" >
                                                         @csrf
                                                         @isset( Auth::user()->id )
                                                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" >
