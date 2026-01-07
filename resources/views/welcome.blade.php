@@ -1,5 +1,19 @@
 @extends('layouts.frontt')
 @section('content')
+<style>
+    .flickity-prev-next-button.previous {
+        right: 10px;
+        transform: rotate(180deg)
+    }
+    .flickity-prev-next-button.next {
+        left: 10px !important;
+        right: auto;
+        transform: rotate(180deg)
+    }
+    .modal-content input {
+       width:100%; 
+    }
+</style>
 <section class="content">
   <div class="container">
     <div class="row">
@@ -15,7 +29,7 @@
       <div class="col-md-4">
         <div class="mainsides">
           @foreach ($banners->where('place','side') as $item)
-            <a href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}" style="max-width: 410px; margin-bottom:10px;"></a>
+            <a href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="{{$item->title}}" style="max-width: 410px; width:100%; margin-bottom:10px;"></a>
           @endforeach
         </div>
       </div>
@@ -35,15 +49,20 @@
           <div class="carouseldn">
             <a href="{{route('product',['id'=>$item->id])}}"><img src="{{ asset('pics/'.$item['pic'].'/'.$item['pic'] ) }}" alt="{{$item->name}}"></a>
             <div class="productdesc">
-              <a href="{{route('product',['id'=>$item->id])}}">{{$item->name}}</a>
-              <p>{!! \Illuminate\Support\Str::limit($item->explain, 55, ' ...') !!}</p>
+              <a href="{{route('product',['id'=>$item->id])}}">{!! \Illuminate\Support\Str::limit($item->name, 19, ' ...') !!}</a>
+              <p>{!! \Illuminate\Support\Str::limit($item->explain, 40, ' ...') !!}</p>
               <div class="pricepl">
+                @isset ($item->helpprice)
+                  <p class="finalprice"><?php echo number_format($item->helpprice) ?> تومان</p>
+                  <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
+                @else
                 @if ($item->discount != NULL)
-                  <p class="finalprice"><?php echo number_format($item->price) ?> تومان</p>
-                  <p class="originalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                  <p class="finalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                  <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
                 @else
                   <p class="finalprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
                 @endif
+                @endisset
               </div>
               <a href="{{route('product',['id'=>$item->id])}}" class="viewprd">مشاهده محصول</a>
             </div>
@@ -68,15 +87,20 @@
           <div class="carouseldn">
             <a href="{{route('product',['id'=>$item->id])}}"><img src="{{ asset('pics/'.$item['pic'].'/'.$item['pic'] ) }}" alt="{{$item->name}}"></a>
             <div class="productdesc">
-              <a href="{{route('product',['id'=>$item->id])}}">{{$item->name}}</a>
-              <p>{!! \Illuminate\Support\Str::limit($item->explain, 55, ' ...') !!}</p>
+              <a href="{{route('product',['id'=>$item->id])}}">{!! \Illuminate\Support\Str::limit($item->name, 19, ' ...') !!}</a>
+              <p>{!! \Illuminate\Support\Str::limit($item->explain, 40, ' ...') !!}</p>
               <div class="pricepl">
+                @isset ($item->helpprice)
+                  <p class="finalprice"><?php echo number_format($item->helpprice) ?> تومان</p>
+                  <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
+                @else
                 @if ($item->discount != NULL)
-                  <p class="finalprice"><?php echo number_format($item->price) ?> تومان</p>
-                  <p class="originalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                  <p class="finalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                  <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
                 @else
                   <p class="finalprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
                 @endif
+                @endisset
               </div>
               <a href="{{route('product',['id'=>$item->id])}}" class="viewprd">مشاهده محصول</a>
             </div>
@@ -94,7 +118,7 @@
     <div class="phoneset">
       <div class="carouseltitle">
         <h2>شگفت‌انگیزها</h2>
-        <a href="" class="morebtn">مشاهده همه<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <a href="#" class="morebtn">مشاهده همه<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M20.2135 8.075L12.4531 15.95L20.2135 23.825" stroke="white" stroke-width="2"/>
           </svg>
           </a>
@@ -105,15 +129,20 @@
           <div class="carouseldn">
             <a href="{{route('product',['id'=>$item->id])}}"><img src="{{ asset('pics/'.$item['pic'].'/'.$item['pic'] ) }}" alt="{{$item->name}}"></a>
             <div class="productdesc">
-              <a href="{{route('product',['id'=>$item->id])}}">{{$item->name}}</a>
-              <p>{!! \Illuminate\Support\Str::limit($item->explain, 55, ' ...') !!}</p>
+              <a href="{{route('product',['id'=>$item->id])}}">{!! \Illuminate\Support\Str::limit($item->name, 19, ' ...') !!}</a>
+              <p>{!! \Illuminate\Support\Str::limit($item->explain, 40, ' ...') !!}</p>
               <div class="pricepl">
+                @isset ($item->helpprice)
+                  <p class="finalprice"><?php echo number_format($item->helpprice) ?> تومان</p>
+                  <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
+                @else
                 @if ($item->discount != NULL)
-                  <p class="finalprice"><?php echo number_format($item->price) ?> تومان</p>
-                  <p class="originalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                  <p class="finalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                  <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
                 @else
                   <p class="finalprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
                 @endif
+                @endisset
               </div>
               <a href="{{route('product',['id'=>$item->id])}}" class="viewprd">مشاهده محصول</a>
             </div>
@@ -127,7 +156,7 @@
     <div class="container">
       <div class="row">
       <div class="col-md-4">
-        <h2>محصولات<br> شگفت‌انگیز</h2>
+        <h2>کتاب‌های خاص</h2>
       </div>
       <div class="col-md-8">
         <div class="inccarousel">
@@ -136,15 +165,20 @@
             <div class="carouseldn">
               <a href="{{route('product',['id'=>$item->id])}}"><img src="{{ asset('pics/'.$item['pic'].'/'.$item['pic'] ) }}" alt="{{$item->name}}"></a>
               <div class="productdesc">
-                <a href="{{route('product',['id'=>$item->id])}}">{{$item->name}}</a>
-                <p>{!! \Illuminate\Support\Str::limit($item->explain, 55, ' ...') !!}</p>
+              <a href="{{route('product',['id'=>$item->id])}}">{!! \Illuminate\Support\Str::limit($item->name, 19, ' ...') !!}</a>
+                <p>{!! \Illuminate\Support\Str::limit($item->explain, 40, ' ...') !!}</p>
                 <div class="pricepl">
-                  @if ($item->discount != NULL)
-                    <p class="finalprice"><?php echo number_format($item->price) ?> تومان</p>
-                    <p class="originalprice"><?php echo number_format($item->discount) ?> تومان</p>
-                  @else
-                    <p class="finalprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
-                  @endif
+                @isset ($item->helpprice)
+                  <p class="finalprice"><?php echo number_format($item->helpprice) ?> تومان</p>
+                  <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
+                @else
+                @if ($item->discount != NULL)
+                  <p class="finalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                  <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
+                @else
+                  <p class="finalprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
+                @endif
+                @endisset
                 </div>
                 <a href="{{route('product',['id'=>$item->id])}}" class="viewprd">مشاهده محصول</a>
               </div>
@@ -175,15 +209,20 @@
           <div class="carouseldn">
             <a href="{{route('product',['id'=>$item->id])}}"><img src="{{ asset('pics/'.$item['pic'].'/'.$item['pic'] ) }}" alt="{{$item->name}}"></a>
             <div class="productdesc">
-              <a href="{{route('product',['id'=>$item->id])}}">{{$item->name}}</a>
-              <p>{!! \Illuminate\Support\Str::limit($item->explain, 55, ' ...') !!}</p>
+              <a href="{{route('product',['id'=>$item->id])}}">{!! \Illuminate\Support\Str::limit($item->name, 19, ' ...') !!}</a>
+              <p>{!! \Illuminate\Support\Str::limit($item->explain, 40, ' ...') !!}</p>
               <div class="pricepl">
+                @isset ($item->helpprice)
+                  <p class="finalprice"><?php echo number_format($item->helpprice) ?> تومان</p>
+                  <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
+                @else
                 @if ($item->discount != NULL)
-                  <p class="finalprice"><?php echo number_format($item->price) ?> تومان</p>
-                  <p class="originalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                  <p class="finalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                  <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
                 @else
                   <p class="finalprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
                 @endif
+                @endisset
               </div>
               <a href="{{route('product',['id'=>$item->id])}}" class="viewprd">مشاهده محصول</a>
             </div>
@@ -202,7 +241,7 @@
         @endforeach
       </div>
     </div>
-
+<!--
     <div class="firstset">
       <div class="carouseltitle">
         <h2>نویسندگان</h2>
@@ -241,12 +280,13 @@
         </div>
       </div>
     </div>
+-->
     <div class="deskvisd">
       <div class="firstset">
         <div class="carouseltitle">
           <h2>ببینید</h2>
           <p>بازتاب حرف های شما</p>
-          <a href="" class="morebtn">مشاهده همه<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <a href="{{route('media.videos')}}" class="morebtn">مشاهده همه<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M20.2135 8.075L12.4531 15.95L20.2135 23.825" stroke="white" stroke-width="2"/>
             </svg>
             </a>
@@ -254,26 +294,86 @@
         <div class="lastvids">
           <div class="row">
             <div class="col-md-8">
-              <div class="bigvid">
-                <a href="#">
+              @foreach($movies->slice(0,1) as $item)
+                <style>
+                    .bigvid::before{
+                        position: absolute;
+                        content: "";
+                        top: 0px;
+                        right: 0px;
+                        border-radius: 15px;
+                        width: 100%;
+                        height: 100%;
+                        background: -webkit-gradient(linear, right top, right bottom, from(rgb(52 75 110 / 65%)), to(rgba(5,44,112,0.65)));
+                        z-index: -1;
+                    }
+                    .bigvid{
+                        background-image: url({{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}); background-position: center; width: 100%; max-height: 440px; border-radius: 15px;    z-index: 0;
+                    }
+                    .bigvid a{
+                        padding: 11px;
+                        background: #ffffff78;
+                        border-radius: 50px;
+                        justify-content: center;
+                        right: 46.5%;
+                    }
+                    .bigvid a:hover{
+                        background: linear-gradient(180deg, #2892A8 0%, #2892A8 100%);
+                    }
+                    .lilvids{
+                        min-height: 130px;
+                    }
+                </style>
+              <div class="bigvid" >
+                <a href="{{route('media.movie',['id'=>$item->id])}}">
                     <img src="https://img.icons8.com/sf-black/64/undefined/play.png">
                 </a>
-                <img src="img/bigvid.png">
-              </div>
+              </div> 
             </div>
+            @endforeach
             <div class="col-md-4">
-              <div class="lilvids">
-                <a href="#">
-                    <img src="https://img.icons8.com/sf-black/64/undefined/play.png">
-                </a>
-                <img src="img/lilvid1.png" alt="">
-              </div>
-              <div class="lilvids">
-                <a href="#">
-                    <img src="https://img.icons8.com/sf-black/64/undefined/play.png">
-                </a>
-                <img src="img/lilvid2.png" alt="">
-              </div>
+                <style>
+                    .lilvids::before{
+                        position: absolute;
+                        content: "";
+                        top: 0px;
+                        right: 0px;
+                        border-radius: 15px;
+                        width: 100%;
+                        height: 100%;
+                        background: -webkit-gradient(linear, right top, right bottom, from(rgb(52 75 110 / 65%)), to(rgba(5,44,112,0.65)));
+                        z-index: -1;
+                    }
+                    .lilvids{
+                         background-position: center; width: 100%; max-height: 440px; border-radius: 15px; background-size: cover;  z-index: 0;
+                    }
+                    .lilvids a{
+                        padding: 11px;
+                        background: #ffffff78;
+                        border-radius: 50px;
+                        justify-content: center;
+                        right: 42.5%;
+                    }
+                    .lilvids{
+                        margin: 0px 0px 13px 5px;
+                        min-height: 215px;
+
+                    }
+                    .lilvids img {
+                        margin: 5px 0px;
+                        width: 50px;
+                    }
+                    .lilvids a:hover{
+                        background: linear-gradient(180deg, #2892A8 0%, #2892A8 100%);
+                    }
+                </style>
+              @foreach($movies->slice(1,3)->take(2) as $item) 
+                  <div class="lilvids" style="background-image: url({{ asset('pics/'.$item['image'].'/'.$item['image'] ) }});">
+                    <a href="{{route('media.movie',['id'=>$item->id])}}">
+                        <img src="https://img.icons8.com/sf-black/64/undefined/play.png">
+                    </a>
+                  </div>
+              @endforeach
             </div>
           </div>
         </div>
@@ -282,53 +382,23 @@
     <div class="phonevid">
       <div class="phoneset">
         <div class="carouseltitle">
-          <h2>فیلم‌های رواق</h2>
-          <a href="" class="morebtn">مشاهده همه<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <h2>ببینید</h2>
+          <a href="{{route('media.videos')}}" class="morebtn">مشاهده همه<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M20.2135 8.075L12.4531 15.95L20.2135 23.825" stroke="white" stroke-width="2"/>
             </svg>
             </a>
         </div>  
         <div class="firstcarousel" >
+        @foreach($movies as $item)
           <div class="carousel-cell carousels">
            <a class="parenta">
-            <img src="img/bigvid.png" alt="">
-            <a href="#" class="childa">
+            <img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" style="height:180px">
+            <a href="{{route('media.movie',['id'=>$item->id])}}" class="childa">
                 <img src="https://img.icons8.com/sf-black/64/undefined/play.png">
             </a>
             </a>
           </div>
-          <div class="carousel-cell carousels">
-            <a class="parenta">
-            <img src="img/bigvid.png" alt="">
-            <a href="#" class="childa">
-                <img src="https://img.icons8.com/sf-black/64/undefined/play.png">
-            </a>
-            </a>
-          </div>
-          <div class="carousel-cell carousels">
-            <a class="parenta">
-            <img src="img/bigvid.png" alt="">
-            <a href="#" class="childa">
-                <img src="https://img.icons8.com/sf-black/64/undefined/play.png">
-            </a>
-            </a>
-          </div>
-          <div class="carousel-cell carousels">
-            <a class="parenta">
-            <img src="img/bigvid.png" alt="">
-            <a href="#" class="childa">
-                <img src="https://img.icons8.com/sf-black/64/undefined/play.png">
-            </a>
-            </a>
-          </div>
-          <div class="carousel-cell carousels">
-            <a class="parenta">
-            <img src="img/bigvid.png" alt="">
-            <a href="#" class="childa">
-                <img src="https://img.icons8.com/sf-black/64/undefined/play.png">
-            </a>
-            </a>
-          </div>
+        @endforeach
         </div>
       </div>
     </div>

@@ -69,11 +69,11 @@ class ProductController extends Controller
         //----MAIN PIC
         if($request->hasfile('pic'))
         {
-        $uploadedFile = $request->file('pic');
-        $filename = $uploadedFile->getClientOriginalName();
-   
-        Storage::disk('local')->putFileAs($filename, $uploadedFile, $filename);
-        $post->pic = $filename;
+            $uploadedFile = $request->file('pic');
+            $filename = $uploadedFile->getClientOriginalName();
+       
+            Storage::disk('local')->putFileAs($filename, $uploadedFile, $filename);
+            $post->pic = $filename;
         }
         $post->save();
 
@@ -165,6 +165,21 @@ class ProductController extends Controller
         $post->delete();
         return redirect()->route('dashboard.admin.product.manage')->with('info', 'پست پاک شد');
     }
+    
+    public function DeleteSpec($id){
+        $spec = specification::find($id);
+        $post = product::find($spec->product_id);
+        $spec->delete();
+        return redirect()->route('dashboard.admin.product.updateproduct',$post->id)->with('info', 'مشخصه پاک شد');
+
+    }
+    
+    public function DeleteTag($id){
+        $spec = product_tag::find($id);
+        $post = product::find($spec->product_id);
+        $spec->delete();
+        return redirect()->route('dashboard.admin.product.updateproduct',$post->id)->with('info', 'برچسب پاک شد');
+    }
 
     public function GetEditPost($id)
     { 
@@ -177,11 +192,28 @@ class ProductController extends Controller
         'images' => Upload::where('product_id',$post->id)->get(), 
         'colors' => color::orderBy('created_at', 'desc')->get() ,
         'tags' => product_tag::where('product_id',$post->id)->orderBy('created_at', 'desc')->get(),
+        'specification' => specification::where('product_id',$post->id)->orderBy('created_at', 'desc')->get(),
+       
          ]);
     }
 
     public function UpdatePost(Request $request)
     {
+        $this->validate($request, [
+            'img.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'title' => ['required', 'string', 'max:255'] ,
+            'explain' => ['required'] ,
+            'price' => ['required'] ,
+            'inventory' => ['required'] ,
+            'discount' => ['nullable'] ,
+            'category_id' => ['required', 'string', 'max:255'] ,
+            'brand' => ['required'],
+            'discountable' => ['required'],
+            'lovely' => ['nullable'],
+            'cheap' => ['nullable'],
+            'content' => ['required'],
+        ]);
+        
         $post = product::find($request->input('id'));
         if (!is_null($post)) {
             
@@ -196,31 +228,8 @@ class ProductController extends Controller
             $post->discountable = $request->input('discountable');
             $post->content = $request->input('content');
             $post->category = $request->input('category_id');
-            //----MAIN PIC
-            if($request->hasfile('pic'))
-            {
-                $uploadedFile = $request->file('pic');
-                $filename = $uploadedFile->getClientOriginalName();
-           
-                Storage::disk('local')->putFileAs($filename, $uploadedFile, $filename);
-                $post->pic = $filename;
-            }
 
-            //--------------IMAGE CONTROLLER
-            if($request->hasfile('img'))
-            {
-                foreach($request->file('img') as $uploadedFile)
-                {
-                    $image= new Upload();
-                    $filename = $uploadedFile->getClientOriginalName();
-                    Storage::disk('local')->putFileAs($filename, $uploadedFile, $filename);
-                    $image->link= $filename;
-                    $image->product()->associate($post);
-                    $image->save();
-                }    
-            } 
             
-            $post->save();
           
             $idx = 1;
             if($request->input('tags'))
@@ -235,7 +244,21 @@ class ProductController extends Controller
                     $idx++;
                 }
             }  
-          
+            
+            $idx = 1;
+            if($request->input('specifications'))
+            {
+                foreach ($request->input('specifications') as $specification) {
+                    $spec = new specification($specification);
+                    $spec->order = $idx;
+                    $spec->product()->associate($post);
+                    $spec->save();
+    
+                    $idx++;
+                }
+            }   
+
+
             $colors=product_color::where('product_id',$request->input('id'))->get();
             foreach($colors as $item){
                     $item->delete();
@@ -255,6 +278,30 @@ class ProductController extends Controller
             }
             
         }
+           //----MAIN PIC
+            if($request->hasfile('pic'))
+            {
+            $uploadedFile = $request->file('pic');
+            $filename = $uploadedFile->getClientOriginalName();
+       
+            Storage::disk('local')->putFileAs($filename, $uploadedFile, $filename);
+            $post->pic = $filename;
+            }
+
+            //--------------IMAGE CONTROLLER
+            if($request->hasfile('img'))
+            {
+                foreach($request->file('img') as $uploadedFile)
+                {
+                    $image= new Upload();
+                    $filename = $uploadedFile->getClientOriginalName();
+                    Storage::disk('local')->putFileAs($filename, $uploadedFile, $filename);
+                    $image->link= $filename;
+                    $image->product()->associate($post);
+                    $image->save();
+                }    
+            } 
+         $post->save();   
         return redirect()->route('dashboard.admin.product.manage',$post->id)->with('info', 'محصول ویرایش شد');
     }
 }

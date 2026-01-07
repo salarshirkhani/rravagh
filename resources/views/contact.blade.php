@@ -4,7 +4,7 @@
     <div class="formcont">
         <div class="row">
             <div class="col-md-12 col-lg-6">
-                <form action="http://nonamepanel.com/webishop/message" method="post" class="contactform">
+                <form action="{{route('message')}}" method="post" class="contactform">
                     <h1 class="formtitle"><b>تماس با ما</b></h1>
                     <div class="row">
                         <div class="col-md-12 col-xs-12 col-lg-6">
@@ -40,7 +40,8 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" name="_token" value="FYAGeplK8qWp7qq2BiqqQr5Cu3LMnAmPECd4iMo3">                    <input type="submit" class="toastrDefaultInfo" value="برقراری تماس">
+                    @csrf   
+                    <input type="submit" class="toastrDefaultInfo" value="برقراری تماس">
                 </form>
             </div>
             <div class="col-lg-6 col-md-12">

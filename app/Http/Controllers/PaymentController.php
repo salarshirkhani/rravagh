@@ -18,6 +18,8 @@ use Evryn\LaravelToman\CallbackRequest;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
 use GuzzleHttp\Client;
+use App\SliderItem;
+
 class PaymentController extends Controller
 {
     
@@ -30,6 +32,7 @@ class PaymentController extends Controller
             'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
             'price'=> $data->price ,
             'copon'=> $data->copon ,
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
             ])->with('info' , 'لطفا اطلاعات خود را دقیق وارد کنید');
         }
         else{
@@ -40,12 +43,24 @@ class PaymentController extends Controller
     }
     
     public function callbacks() {
-
-        $transaction=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->FIRST();
-        return view('callback',[ 
-            'transaction' => $transaction,
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
-        ]);
+        
+        if (!Auth::check()) {
+             $transaction=transaction::orderBy('id', 'desc')->FIRST();
+             return view('callback',[ 
+                'transaction' => $transaction,
+                'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
+                'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+            ]);
+            
+        }
+        else{
+            $transaction=transaction::orderBy('id', 'desc')->where('user_id' , Auth::user()->id)->FIRST();
+            return view('callback',[ 
+                'transaction' => $transaction,
+                'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
+                'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+            ]);
+        }
         
     }
     
@@ -90,7 +105,7 @@ class PaymentController extends Controller
 
             $transaction->save();
 
-            $trans=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
+            $trans=transaction::orderBy('id', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
             
             $order_check=order::where('user_id' , Auth::user()->id )->orderBy('created_at', 'desc')->get();
 
@@ -110,7 +125,7 @@ class PaymentController extends Controller
             $invoice = (new Invoice)->amount($data->input('price'));
             // Purchase and pay the given invoice.
             // You should use return statement to redirect user to the bank page.
-            return Payment::callbackUrl('https://rravagh.com/ravaghh/payment/callbacks?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
+            return Payment::callbackUrl('https://rravagh.com/payment/callbacks?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
                 $trans=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
                 $trans->transaction=$transactionId;
                 $trans->save();
@@ -140,33 +155,36 @@ class PaymentController extends Controller
             $order_check=order::where('transaction_id' , $trans->id)->orderBy('created_at', 'desc')->get();
             foreach($order_check as $item){
                 $item->status='paid';
+                $product=Product::find($item->product_id);
+                $product->inventory = $product->inventory -$item->number ;
+                $product->save();
                 $item->save();
             }
             $trans->save();
             Cart::destroy();
-        
+            
             $details = [
-                   'title' => 'ایمیل از سایت دیجی ریحان',
-                   'message' => 'سفارش جدیدی در سایت  دیجی ریحان ثبت شد',
-                    'link' => 'https://digireyhan.com'
+                   'title' => 'ایمیل از سایت رواق ',
+                   'message' => 'سفارش جدیدی در سایت رواق ثبت شد',
+                    'link' => 'https://rravagh.com'
             ];
 
-            \Mail::to('salarshirkhany16@gmail.com')->send(new \App\Mail\order($details));
+            //\Mail::to('salarshirkhany16@gmail.com')->send(new \App\Mail\order($details));
             
 
-            $url = "https://ippanel.com/services.jspd";
+           // $url = "https://ippanel.com/services.jspd";
 
-            $rcpt_nm = array(Auth::user()->mobile, '09372833776');
-            $param = array
-            (
-               'uname' => 'ketabjang',
-               'pass' => 'ketab7976190',
-               'from' => '3000505',
-                'message' => 'سفارش جدیدی در سایت  دیجی ریحان ثبت شد',
-//                'message' => 'تست',
-               'to' => json_encode($rcpt_nm),
-                'op' => 'send'
-            );
+          //  $rcpt_nm = array(Auth::user()->mobile, '09372833776');
+           // $param = array
+          //  (
+           //    'uname' => 'ketabjang',
+          //     'pass' => 'ketab7976190',
+          //     'from' => '3000505',
+//'message' => 'سفارش جدیدی در سایت  دیجی ریحان ثبت شد',
+//       /         'message' => 'تست',
+         //      'to' => json_encode($rcpt_nm),
+          //      'op' => 'send'
+          //  );
             return redirect()->route('payment.callback')->with('transaction', $trans->id)->with('info', $status);
           
           } 

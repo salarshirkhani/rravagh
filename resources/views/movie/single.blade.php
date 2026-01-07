@@ -10,39 +10,40 @@
     <style>
         .mediaprice .finalprice {
             font-size: 22px;
+            white-space: break-spaces;
         }
     </style>
     <script>
-document.addEventListener('DOMContentLoaded', function(){
-    var v = document.getElementById('v');
-    var canvas = document.getElementById('c');
-    var context = canvas.getContext('2d');
-
-    var cw = Math.floor(canvas.clientWidth / 100);
-    var ch = Math.floor(canvas.clientHeight / 100);
-    canvas.width = cw;
-    canvas.height = ch;
-
-    v.addEventListener('play', function(){
-        draw(this,context,cw,ch);
+    document.addEventListener('DOMContentLoaded', function(){
+        var v = document.getElementById('v');
+        var canvas = document.getElementById('c');
+        var context = canvas.getContext('2d');
+    
+        var cw = Math.floor(canvas.clientWidth / 100);
+        var ch = Math.floor(canvas.clientHeight / 100);
+        canvas.width = cw;
+        canvas.height = ch;
+    
+        v.addEventListener('play', function(){
+            draw(this,context,cw,ch);
+        },false);
+    
     },false);
 
-},false);
-
-function draw(v,c,w,h) {
-    if(v.paused || v.ended) return false;
-    c.drawImage(v,0,0,w,h);
-    setTimeout(draw,20,v,c,w,h);
-}
-   var v = document.getElementById('v');
-    var canvas = document.getElementById('c');
-    var context = canvas.getContext('2d');
-
-    var cw = Math.floor(canvas.clientWidth / 100);
-    var ch = Math.floor(canvas.clientHeight / 100);
-    canvas.width = cw;
-    canvas.height = ch;
-</script>
+    function draw(v,c,w,h) {
+        if(v.paused || v.ended) return false;
+        c.drawImage(v,0,0,w,h);
+        setTimeout(draw,20,v,c,w,h);
+    }
+       var v = document.getElementById('v');
+        var canvas = document.getElementById('c');
+        var context = canvas.getContext('2d');
+    
+        var cw = Math.floor(canvas.clientWidth / 100);
+        var ch = Math.floor(canvas.clientHeight / 100);
+        canvas.width = cw;
+        canvas.height = ch;
+    </script>
     <div class="medialine"></div>
     <div class="row">
         <div class="col-md-9">
@@ -58,22 +59,32 @@ function draw(v,c,w,h) {
                     <source src="{{ asset('pics/'.$item['link'].'/'.$item['link'] ) }}" type="video/mp4">
                 </video>
             @else
+            @if($item->category != '19')
                 @isset($item->trailer)
                     {!!$item->trailer!!}
                  @else
                     <img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" alt="">
                 @endisset
+            @else
+                <canvas id=c></canvas>
+                <video  id=v height="500" style="width:100%;" controls>
+                    <source src="{{ asset('pics/'.$item['link'].'/'.$item['link'] ) }}" type="video/mp4">
+                </video>
+
+            @endif
             @endisset
 
             </div>
         </div>
         <div class="col-md-3">
             
-            <div class="mediaprice">
+            <div class="mediaprice">                   
                 @isset($subscribe)
 
                 @else
-                    <p class="finalprice">برای مشاهده فیلم باید اشتراک دیجی ریحان را خریداری کنید</p>
+                @if($item->category != '19' )
+                    @if($category->parent_id != '19' )
+                    <p class="finalprice">برای مشاهده فیلم باید اشتراک رواق  را خریداری کنید</p>
                     <div class="addtocartbtn">
                         <a href="{{route('subscription')}}">
                             <svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -82,6 +93,16 @@ function draw(v,c,w,h) {
                             </svg>
                         خرید اشتراک</a>
                     </div>
+                    @else
+                    <style>
+                        .mediaprice{display:none;}
+                    </style>
+                    @endif
+                @else
+                <style>
+                    .mediaprice{display:none;}
+                </style>
+                @endif
                 @endisset
                 
             </div>

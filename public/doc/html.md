@@ -161,12 +161,8 @@ utility](https://www.npmjs.com/package/modernizr-cli).
 If you need to include
 [polyfills](https://remysharp.com/2010/10/08/what-is-a-polyfill) in your
 project, you must make sure those load before any other JavaScript. If you're
-using a polyfill CDN service, like [polyfill.io](https://polyfill.io/v3/), just put
-it before the other scripts in the bottom of the page:
-
-```html
-    <script src="js/vendor/modernizr-3.10.0.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js"></script>
+using a polyfill CDN service, like [polyfill.io]("js/vendor/modernizr-3.10.0.min.js"></script>
+    <script src=""></script>
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
 </body>

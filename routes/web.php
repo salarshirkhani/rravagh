@@ -24,6 +24,7 @@ Route::get('promotion', 'FrontController@promotion')->name('promotion');
 Route::get('blog', 'FrontController@blog')->name('blog');
 Route::get('search', 'FrontController@search')->name('search');
 Route::get('post/{id}', 'FrontController@post')->name('post');
+Route::get('page/{id}', 'FrontController@page')->name('page');
 Route::get('product/{id}', 'FrontController@Sproduct')->name('product');
 Route::get('brands/{id}', 'FrontController@Brands')->name('brands');
 Route::get('category/{slug}', 'FrontController@category')->name('category');
@@ -53,8 +54,10 @@ Route::get('discount', 'PaymentController@discount')->name('discount');
 
 Route::post('checkout', 'PaymentController@checkout')->name('checkout');
 Route::post('payment/pay','PaymentController@create')->name('payment.pay');
-Route::get('payment/callbacks', 'PaymentController@callback')->name('payment.callbacks');
-Route::get('payment/callback', 'PaymentController@callbacks')->name('payment.callback');
+Route::middleware(['web'])->group(function () {
+    Route::get('payment/callbacks', 'PaymentController@callback')->name('payment.callbacks');
+    Route::get('payment/callback', 'PaymentController@callbacks')->name('payment.callback');
+});
 //LIKE
 Route::post('like','LikeController@Like')->name('like'); 
 
@@ -66,6 +69,7 @@ Route::prefix('media')
 ->name('media.')
 ->group(function() {
     Route::get('/', 'Movie\IndexController@index')->name('index');
+    Route::get('videos', 'Movie\IndexController@videos')->name('videos');
     Route::post('moviesearch', 'Movie\IndexController@moviesearch')->name('moviesearch');
     Route::get('movie/{id}', 'Movie\IndexController@single')->name('movie');
     Route::post('all', 'Movie\IndexController@movies')->name('all');
@@ -94,8 +98,19 @@ Route::prefix('dashboard')
                 Route::get('news/manage', 'PostController@GetManagePost')->name('news.manage');
                 Route::get('deletepost/{id}','PostController@DeletePost')->name('news.deletepost');  
                 Route::get('updatepost/{id}','PostController@GetEditPost')->name('news.updatepost');
-                Route::post('updatepost/{id}','PostController@UpdatePost')->name('news.updatepost');\
+                Route::post('updatepost/{id}','PostController@UpdatePost')->name('news.updatepost');
                 Route::get('ndeletetags/{ids}','PostController@DeleteTag')->name('news.ndeletetags');
+                
+                
+                //PAGE CONTROLLER
+                Route::post('page/create', ['uses' => 'PageController@CreatePost','as' => 'page.create' ]);
+                Route::get('page/create', ['uses' => 'PageController@GetCreatePost','as' => 'page.create']); 
+                Route::get('page/manage', 'PageController@GetManagePost')->name('page.manage');
+                Route::get('deletepage/{id}','PageController@DeletePost')->name('page.deletepage');  
+                Route::get('updatepage/{id}','PageController@GetEditPost')->name('page.updatepage');
+                Route::post('updatepage/{id}','PageController@UpdatePost')->name('page.updatepage');
+                Route::get('pdeletetags/{ids}','PageController@DeleteTag')->name('page.pdeletetags');
+
 
                 //NOTIFICATION CONTROLLER
                 Route::post('notification/create', ['uses' => 'NotificationController@CreatePost','as' => 'notification.create' ]);
@@ -148,6 +163,8 @@ Route::prefix('dashboard')
                 Route::get('product/manage', 'ProductController@GetManagePost')->name('product.manage');
                 Route::get('product/manage', 'ProductController@GetManagePost')->name('product.manage');
                 Route::get('deleteproduct/{id}','ProductController@DeletePost')->name('product.deleteproduct');  
+                Route::get('deletetag/{id}','ProductController@DeleteTag')->name('deletetag');  
+                Route::get('deletespecification/{id}','ProductController@DeleteSpec')->name('deletespecification');  
                 Route::get('updateproduct/{id}','ProductController@GetEditPost')->name('product.updateproduct');
                 Route::post('updateproduct/{id}','ProductController@UpdatePost')->name('product.updateproduct');      
                 
@@ -217,7 +234,7 @@ Route::prefix('dashboard')
 
  //------MOVIE ADMIN CONTROLLER----- 
 
-                 //MOVIES CONTROLLER
+            //MOVIES CONTROLLER
                 Route::post('movies/create', ['uses' => 'MoviesController@CreatePost','as' => 'movies.create' ]);
                 Route::get('movies/create', ['uses' => 'MoviesController@GetCreatePost','as' => 'movies.create']); 
                 Route::get('movies/manage', 'MoviesController@GetManagePost')->name('movies.manage');

@@ -14,6 +14,7 @@ use App\subscribe;
 use App\color;
 use App\promote;
 use App\movie_tag;
+use App\SliderItem;
 use App\post_tag;
 use App\subscription;
 use App\Rules\JalaliDate;
@@ -50,12 +51,12 @@ class IndexController extends Controller
 
     public function index() {
 
-        SEOTools::setTitle('دیجی ریحان');
+        SEOTools::setTitle('رواق');
         SEOTools::setDescription('مرجع فروش محصولات فرهنگی');
-        SEOTools::opengraph()->setUrl('http://digireyhan.com/media');
-        SEOTools::setCanonical('http://digireyhan.com/media');
+        SEOTools::opengraph()->setUrl('http://rravagh.com');
+        SEOTools::setCanonical('http://rravagh.com');
         SEOTools::opengraph()->addProperty('type', 'articles');
-        SEOTools::twitter()->setSite('@digireyhan');
+        SEOTools::twitter()->setSite('@rravagh');
       
       	if(Auth::check())
           $subscribe= subscribe::where('status' , 'new')->where('user_id' , Auth::user()->id)->where('finish_date' , '!=' , NULL)->where('finish_date','>',carbon::now())->orderBy('created_at', 'desc')->FIRST();
@@ -65,9 +66,35 @@ class IndexController extends Controller
         return view('movie.index',[
         'movies' => movies::orderBy('created_at', 'desc')->get(),
         'tags'=>movie_tag::orderBy('created_at', 'desc')->select('name')->distinct()->get()->paginate(7),
-        'moviecategories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','movie')->orderBy('priority', 'desc')->get(),
+        'moviecategories' => Category::where('id','22')->orwhere('parent_id','22')->where('show','1')->where('type','movie')->orderBy('priority', 'desc')->get(),
         'categories' => Category::whereNull('parent_id')->where('show','1')->where('type','product')->with('allChildren')->orderBy('priority', 'desc')->get(),
         'subscribe' =>  $subscribe, 
+        'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+        ]);
+
+    }
+    
+    public function videos() {
+
+        SEOTools::setTitle('رواق');
+        SEOTools::setDescription('مرجع فروش محصولات فرهنگی');
+        SEOTools::opengraph()->setUrl('http://rravagh.com');
+        SEOTools::setCanonical('http://rravagh.com');
+        SEOTools::opengraph()->addProperty('type', 'articles');
+        SEOTools::twitter()->setSite('@rravagh');
+      
+      	if(Auth::check())
+          $subscribe= subscribe::where('status' , 'new')->where('user_id' , Auth::user()->id)->where('finish_date' , '!=' , NULL)->where('finish_date','>',carbon::now())->orderBy('created_at', 'desc')->FIRST();
+        else
+          $subscribe =NULL ;
+
+        return view('movie.videos',[
+        'movies' => movies::orderBy('created_at', 'desc')->get(),
+        'tags'=>movie_tag::orderBy('created_at', 'desc')->select('name')->distinct()->get()->paginate(7),
+        'moviecategories' => Category::where('id','19')->orwhere('parent_id','19')->where('show','1')->where('type','movie')->orderBy('priority', 'desc')->get(),
+        'categories' => Category::whereNull('parent_id')->where('show','1')->where('type','product')->with('allChildren')->orderBy('priority', 'desc')->get(),
+        'subscribe' =>  $subscribe, 
+        'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
     }
@@ -87,6 +114,7 @@ class IndexController extends Controller
             return view('movie.moviesearch',['movies' => $posts,
                 'categories' => Category::whereNull('parent_id')->where('show','1')->where('type','product')->with('allChildren')->where('type','movie')->orderBy('priority', 'desc')->get(),
 				'subscribe' =>  $subscribe, 
+				'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
             ]);
     }
 
@@ -96,12 +124,12 @@ class IndexController extends Controller
         $item=movies::find($id);
         $related_products = movies::inRandomOrder()->where('category', $item->category)->limit(6)->get();
         $comments = comment::where('movie_id',$id)->orderBy('created_at', 'desc')->get();
-        SEOTools::setTitle(' دیجی ریحان-'.$item->name);
+        SEOTools::setTitle(' رواق -'.$item->name);
         SEOTools::setDescription($item->explain);
-        SEOTools::opengraph()->setUrl('http://digireyhan.com');
-        SEOTools::setCanonical('http://digireyhan.com');
+        SEOTools::opengraph()->setUrl('http://rravagh.com');
+        SEOTools::setCanonical('http://rravagh.com');
         SEOTools::opengraph()->addProperty('type', 'articles');
-        SEOTools::twitter()->setSite('@digireyhan');
+        SEOTools::twitter()->setSite('@rravagh');
         if(Auth::check())
           $subscribe= subscribe::where('status' , 'new')->where('user_id' , Auth::user()->id)->where('finish_date' , '!=' , NULL)->where('finish_date','>',carbon::now())->orderBy('created_at', 'desc')->FIRST();
         else
@@ -114,6 +142,8 @@ class IndexController extends Controller
             'category' => Category::find($item->category),
             'tags' => movie_tag::where('movie_id',$item->id)->orderBy('created_at', 'desc')->get(),
             'subscribe' =>  $subscribe, 
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+
         ]);
 
     } 
@@ -144,9 +174,11 @@ class IndexController extends Controller
         else
           $subscribe =NULL ;
         return view('movie.all',[
-            'categories' => Category::whereNull('parent_id')->where('show','1')->where('type','product')->with('allChildren')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::where('show','1')->where('type','product')->with('allChildren')->orderBy('priority', 'desc')->get(),
             'movies' => movies::orderBy('created_at', 'desc')->get(),
             'subscribe' =>  $subscribe, 
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+
         ]);
 
     }  
@@ -155,12 +187,12 @@ class IndexController extends Controller
 
         //$pros=array();
         $category=Category::where('slug' , $slug)->FIRST();
-        SEOTools::setTitle('دیجی ریحان -'.$category->name);
+        SEOTools::setTitle('رواق -'.$category->name);
         SEOTools::setDescription($category->desccription);
-        SEOTools::opengraph()->setUrl('http://digireyhan.com/media/category/'.$slug);
-        SEOTools::setCanonical('http://digireyhan.com');
+        SEOTools::opengraph()->setUrl('http://rravagh.com/media/category/'.$slug);
+        SEOTools::setCanonical('http://rravagh.com');
         SEOTools::opengraph()->addProperty('type', 'articles');
-        SEOTools::twitter()->setSite('@digireyhan');
+        SEOTools::twitter()->setSite('@rravagh');
       	if(Auth::check())
            $subscribe= subscribe::where('status' , 'new')->where('user_id' , Auth::user()->id)->where('finish_date' , '!=' , NULL)->where('finish_date','>',carbon::now())->orderBy('created_at', 'desc')->FIRST();
         else
@@ -172,6 +204,7 @@ class IndexController extends Controller
             'categories' => Category::whereNull('parent_id')->where('show','1')->where('type','product')->with('allChildren')->orderBy('priority', 'desc')->get(),
             'movies' => $movies,
             'category' => $category,
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
 
         ]);
 
@@ -191,6 +224,7 @@ class IndexController extends Controller
             return view('movie.tags',['movies' => $posts,
                 'categories' => Category::whereNull('parent_id')->where('show','1')->where('type','product')->with('allChildren')->orderBy('priority', 'desc')->get(),
 				'subscribe' =>  $subscribe, 
+				'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
             ]);
     }
     

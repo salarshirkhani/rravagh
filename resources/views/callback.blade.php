@@ -11,7 +11,7 @@
         <a href="">صفحه اصلی</a> > <a href="#">نتیجه پرداخت</a> 
     </div>
 
-@if($transaction->status=='notpaid')
+@if(Session::get('info')=='notpaid')
     <div class="payfailed">
         <img src="{{ asset('img/close_ring.svg')}}" alt="">
         <h3>متاسفانه مشکلی پیش آمده است</h3>

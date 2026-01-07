@@ -22,6 +22,7 @@
                         <table id="example1" class="table table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th>#</th>
                                 <th>عنوان</th>
                                 <th>توضیح کوتاه</th>
                                 <th>قیمت</th>
@@ -32,6 +33,7 @@
                                 <tbody>
                              @foreach($posts as $item)
                                 <tr>
+                                    <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->explain }}</td>
                                     <td>{{ $item->price }}</td>
@@ -71,6 +73,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
+                                    <th>#</th>
                                     <th>عنوان</th>
                                     <th>توضیح کوتاه</th>
                                     <th>قیمت</th>

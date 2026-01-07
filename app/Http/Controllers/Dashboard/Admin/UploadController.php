@@ -36,7 +36,7 @@ class UploadController extends Controller
     public function DeletePost($id){
         $post = Upload::find($id);
         $post->delete();
-        return redirect()->route('dashboard.admin.uploader.manage')->with('info', 'فایل پاک شد');
+        return redirect()->back()->with('info', 'فایل پاک شد');
     }
 
 }

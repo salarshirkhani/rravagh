@@ -45,7 +45,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => '/home/rravagh/public_html/ravaghh/pics',
+            'root' => '/home/rravaghc/public_html/pics',
         ],
 
         'public' => [

@@ -61,8 +61,6 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'birthdate' => ['required','date','date_format:Y/n/j' ],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'mobile' => ['required', 'regex:/^(09[0-9]{9})|(۰۹[۰-۹]{9})$/', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -81,9 +79,7 @@ class RegisterController extends Controller
     {
         $post = new User([
             'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
             'mobile' => $data['mobile'],
-            'birthdate' => Jalalian::fromFormat('Y/n/j',$data['birthdate'])->toCarbon()->format('Y/m/d'),
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type' => 'buyer'

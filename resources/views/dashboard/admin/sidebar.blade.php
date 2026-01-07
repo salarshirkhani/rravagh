@@ -7,6 +7,7 @@
 <x-sidebar-item title="لیست دسته‌بندی‌ها" icon="fas fa-tags" route="dashboard.admin.categories.index" />
 <x-sidebar-item title="مدیریت مطالب" icon="fas fa-edit" route="dashboard.admin.news.manage" />
 <x-sidebar-item title="مدیریت نظرات" icon="fas fa-folder" route="dashboard.admin.comment.manage" />
+<x-sidebar-item title="مدیریت لندینگ ها" icon="fas fa-edit" route="dashboard.admin.page.manage" />
 <x-sidebar-item title="مدیریت تماس" icon="fas fa-folder" route="dashboard.admin.contact.manage" />
 <x-sidebar-item title="مدیریت بنر ها" icon="fas fa-money-check-alt" route="dashboard.admin.slider-items.index" />
 <x-sidebar-item title="مدیریت اشتراک" icon="far fa-handshake" route="dashboard.admin.subscription.manage" />

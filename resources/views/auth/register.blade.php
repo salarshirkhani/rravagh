@@ -19,29 +19,11 @@
 		</span>
         
         <div class="wrap-input100 validate-input" data-validate="نام اجباری است!">
-            <input type="text" name="first_name" maxlength="100" class=" input100" placeholder="نام" required=""
+            <input type="text" name="first_name" maxlength="100" class=" input100" placeholder="نام و نام خانوادگی" required=""
                    id="id_first_name" value="{{ old('first_name') ?? '' }}">
             <span class="focus-input100"></span>
             <span class="symbol-input100">
-							<i class="fa fa-user" aria-hidden="true"></i>
-						</span>
-        </div>
-
-        <div class="wrap-input100 validate-input" data-validate="نام‌خانوادگی اجباری است!">
-            <input type="text" name="last_name" maxlength="100" class=" input100" placeholder="نام خانوادگی" required=""
-                   id="id_last_name" value="{{ old('last_name') ?? '' }}">
-            <span class="focus-input100"></span>
-            <span class="symbol-input100">
-							<i class="fa fa-user" aria-hidden="true"></i>
-						</span>
-        </div>
-        
-        <div class="wrap-input100 validate-input" data-validate="تاریخ تولد اجباری است!">
-            <input type="text" id="date1" name="birthdate" maxlength="100" class=" input100" placeholder="مثلا 1377/12/02" required=""
-                  value="{{ old('birthdate') ?? '' }}">
-            <span class="focus-input100"></span>
-            <span class="symbol-input100">
-							<i class="fas fa-folder" aria-hidden="true"></i>
+				<i class="fa fa-user" aria-hidden="true"></i>
 			</span>
         </div>
 

@@ -102,7 +102,7 @@
             </tr>
             <tr class="order-total">
                 <th>مجموع</th>
-                <?php $price=(((100-Session::get('discount'))*Cart::subtotal() + 2000000)/100); ?>
+                <?php $price=(((100-Session::get('discount'))*Cart::subtotal() + 20)/100); ?>
                 <td data-title="مجموع"><p><?php echo number_format($price) ?> تومان</p></td>
             </tr>
         </table>

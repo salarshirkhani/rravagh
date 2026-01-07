@@ -3,11 +3,7 @@
 <section class="content">
     <div class="container">
       <div class="main-carousel" data-flickity='{ "wrapAround": false, "freScroll":true, "autoPlay": 3000, "pauseAutoPlayOnHover": true  }'>
-        @foreach ($banners->where('place','slider') as $item)
-        <div class="carousel-cell">
-          <a href="{{$item->url}}"><img src="{{ asset('pics/'.$item['image'].'/'.$item['image'] ) }}" style="width:100%;" alt="{{$item->title}}"></a>
-        </div>
-        @endforeach
+
       </div>
       <div class="phoneset">
         <div class="carouseltitle">
@@ -26,12 +22,17 @@
                         <a href="{{route('product',['id'=>$item->id])}}">{{$item->name}}</a>
                         <p>{!! \Illuminate\Support\Str::limit($item->explain, 55, ' ...') !!}</p>
                         <div class="pricepl">
-                          @if ($item->discount != NULL)
-                            <p class="finalprice"><?php echo number_format($item->price) ?> تومان</p>
-                            <p class="originalprice"><?php echo number_format($item->discount) ?> تومان</p>
-                          @else
-                            <p class="finalprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
-                          @endif
+                        @isset ($item->helpprice)
+                          <p class="finalprice"><?php echo number_format($item->helpprice) ?> تومان</p>
+                          <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
+                        @else
+                        @if ($item->discount != NULL)
+                          <p class="finalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                          <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
+                        @else
+                          <p class="finalprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
+                        @endif
+                        @endisset
                         </div>
                         <a href="{{route('product',['id'=>$item->id])}}" class="viewprd">مشاهده محصول</a>
                       </div>
@@ -61,12 +62,17 @@
                         <a href="{{route('product',['id'=>$item->id])}}">{{$item->name}}</a>
                         <p>{!! \Illuminate\Support\Str::limit($item->explain, 55, ' ...') !!}</p>
                         <div class="pricepl">
-                          @if ($item->discount != NULL)
-                            <p class="finalprice"><?php echo number_format($item->price) ?> تومان</p>
-                            <p class="originalprice"><?php echo number_format($item->discount) ?> تومان</p>
-                          @else
-                            <p class="finalprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
-                          @endif
+                            @isset ($item->helpprice)
+                              <p class="finalprice"><?php echo number_format($item->helpprice) ?> تومان</p>
+                              <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
+                            @else
+                            @if ($item->discount != NULL)
+                              <p class="finalprice"><?php echo number_format($item->discount) ?> تومان</p>
+                              <p class="originalprice"><?php echo number_format($item->price) ?> تومان</p>
+                            @else
+                              <p class="finalprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
+                            @endif
+                            @endisset
                         </div>
                         <a href="{{route('product',['id'=>$item->id])}}" class="viewprd">مشاهده محصول</a>
                       </div>

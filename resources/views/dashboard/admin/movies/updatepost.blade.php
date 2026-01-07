@@ -14,6 +14,13 @@
         </div>
     </div>
 @endif
+                            @if ($errors->any())
+                                @foreach ($errors->all() as $error)
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger">{{ $error }}</p>
+                                    </div>
+                                @endforeach
+                            @endif  
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>

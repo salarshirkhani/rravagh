@@ -23,11 +23,23 @@ class HelpController extends Controller
  
     public function callbacks() {
 
-        $transaction=support::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->FIRST();
-        return view('callback',[ 
-            'transaction' => $transaction,
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
-        ]);
+        if (!Auth::check()) {
+             $transaction=support::orderBy('id', 'desc')->FIRST();
+             return view('callback',[ 
+                'transaction' => $transaction,
+                'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
+                'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+            ]);
+            
+        }
+        else{
+            $transaction=support::orderBy('id', 'desc')->where('user_id' , Auth::user()->id)->FIRST();
+            return view('callback',[ 
+                'transaction' => $transaction,
+                'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
+                'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+            ]);
+        }
         
     }
     
@@ -51,14 +63,14 @@ class HelpController extends Controller
 
             $transaction->save();
 
-            $trans=support::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
+            $trans=support::orderBy('id', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
             
             // Create new invoice.
             $invoice = (new Invoice)->amount($data->input('price'));
             // Purchase and pay the given invoice.
             // You should use return statement to redirect user to the bank page.
-            return Payment::callbackUrl('https://rravagh.com/ravaghh/payment/callbacksh?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
-                $trans=support::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
+            return Payment::callbackUrl('https://rravagh.com/payment/scallbacksh?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
+                $trans=support::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('transaction' ,NULL)->where('status' , 'notpaid')->FIRST();
                 $trans->transaction=$transactionId; 
                 $trans->save();
             })->pay()->render();
@@ -79,16 +91,19 @@ class HelpController extends Controller
         );
       
       try {
+          if($request->Status == 'NOK'){
+           $status='notpaid';
+           return redirect()->route('payment.callback')->with('info', $status);
+          }
           $receipt = Payment::amount($trans->amount)->transactionId($trans->transaction)->verify();
 
-          // You can show payment referenceId to the user.
-          echo $receipt->getReferenceId();
+
             $trans->status='paid';
             $status='paid';
             $trans->invoice_code=$trans->transaction;
             $transaction=$trans->transaction;
 
-            $product=product::orderBy('created_at', 'desc')->where('product_id' , $trans->product_id)->FIRST();
+            $product=product::orderBy('created_at', 'desc')->where('id' , $trans->product_id)->FIRST();
 
             if(isset($product->helpprice))
                 $finalprice=((($product->helpprice * $product->inventory)-$trans->amount)/$product->inventory);
@@ -99,38 +114,13 @@ class HelpController extends Controller
             $product->save();
 
             $trans->save();
-        
-            $details = [
-                   'title' => 'ایمیل از سایت  رواق',
-                   'message' => 'کمک هزینه جدیدی در سایت رواق ثبت شد',
-                    'link' => 'https://rravagh.com'
-            ];
-
-            \Mail::to('salarshirkhany16@gmail.com')->send(new \App\Mail\order($details));
-            
-
-            $url = "https://ippanel.com/services.jspd";
-
-            $rcpt_nm = array(Auth::user()->mobile, '09372833776');
-            $param = array
-            (
-               'uname' => 'ketabjang',
-               'pass' => 'ketab7976190',
-               'from' => '3000505',
-                'message' => 'سفارش جدیدی در سایت  دیجی ریحان ثبت شد',
-//                'message' => 'تست',
-               'to' => json_encode($rcpt_nm),
-                'op' => 'send'
-            );
-
-            
 
             return redirect()->route('payment.callback')->with('transaction', $trans->id)->with('info', $status);
           
           } 
       catch (InvalidPaymentException $exception) {
-
-           return redirect()->route('payment.callback');
+           $status='notpaid';
+           return redirect()->route('payment.callback')->with('info', $status);
       }
 
     }

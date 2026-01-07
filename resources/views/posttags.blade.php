@@ -1,24 +1,23 @@
 @extends('layouts.frontt')
 @section('content')
+<style>
+    .blogs a {
+    bottom: 0px;
+    }
+</style>
 <div class="container">
     <h2 class="bloghead"> مطالب برچسب {{$tag}}</h2>
-    @foreach ($posts as $item)   
-    <div class="blogs">
-        <div class="row">
-			<div class="blogsingle">
-				<div class="col-md-3 col-xs-4">
-					<div class="blogimg">
-						<img src="{{ asset('pics/'.$item->post->pic.'/'.$item->post->pic ) }}" alt="{{$item->post->title}}">
-					</div>
-				</div>
-				<div class="col-md-9 col-xs-8">
-					<div class="blogdets">
-						<h3>{{$item->post->title}}</h3>
-						{!! \Illuminate\Support\Str::limit($item->post->explain, 325, ' ...') !!}
-					</div>
-					<a href="{{route('post',['id'=>$item->post->id])}}">ادامه مطلب</a>
-				</div>
-			</div>
+    @foreach ($posts as $item)
+    <div class="newblogs" style="margin:15px 0px;">
+        
+        <div class="newblogimg">
+            <a href="{{route('post',['id'=>$item->post->id])}}">
+				<img src="{{ asset('pics/'.$item->post->pic.'/'.$item->post->pic ) }}" alt="{{$item->post->title}}">
+            </a>
+        </div>
+        <div class="newblogdets">
+            <a href="{{route('post',['id'=>$item->post->id])}}"><h4>{!! \Illuminate\Support\Str::limit($item->post->title, 55, ' ...') !!}</h4></a>
+            <p>{!! \Illuminate\Support\Str::limit($item->post->explain, 95, ' ...') !!}</p>
         </div>
     </div>
     @endforeach

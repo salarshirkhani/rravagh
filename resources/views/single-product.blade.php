@@ -1,6 +1,7 @@
 @extends('layouts.frontt')
 @section('content')
 <link rel="stylesheet" href="{{asset('css/modal.css')}}">
+
 <!--<style>
     @media only screen and (min-width:800px){  
        .carousel-cell a img{ 
@@ -28,28 +29,87 @@
         <div class="alert alert-danger">{{ $error }}</div>
         @endforeach
         <div class="whereareyou">
-            <a href="">صفحه اصلی</a> > <a href="{{route('products')}}">محصولات</a> > <a href="{{route('product',['id'=>$item->id])}}">{{$item->name}}</a>
+            <a href="">صفحه اصلی</a> > <a href="{{route('products')}}">محصولات</a> > <a href="{{route('category',['slug'=>$category->slug])}}">{{$category->name}}</a> > <a href="{{route('product',['id'=>$item->id])}}">{{$item->name}}</a>
         </div>
+        <style>
+        @media (max-width: 768px) {
+          .carousel-cell {
+            margin: 0 5px !important; /* فاصله بین عکس‌ها */
+          }
+        
+          .carousel-cell img {
+            width: 100%;
+            height: auto;
+            display: block;
+          }
+        }
+        </style>
+
+        <style>
+        .carousel-main {
+            direction: ltr;
+            margin-bottom: 10px;
+        }
+        .carousel-main .carousel-cell {
+            width: 100%;
+            margin-right: 10px;
+        }
+        .carousel-main .carousel-cell img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+        
+        .carousel-nav {
+            direction: ltr;
+            margin-top: 5px;
+        }
+        .carousel-nav .carousel-cell img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            opacity: 0.6;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .carousel-nav .is-selected img {
+            opacity: 1;
+            border: 2px solid #999;
+        }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // اطمینان از لود کامل
+                const mains = document.querySelectorAll('.carousel-main');
+                const navs = document.querySelectorAll('.carousel-nav');
+        
+                mains.forEach(el => new Flickity(el, el.dataset.flickity ? JSON.parse(el.dataset.flickity) : {}));
+                navs.forEach(el => new Flickity(el, el.dataset.flickity ? JSON.parse(el.dataset.flickity) : {}));
+            });
+        </script>
+
         <div class="briefprod">
             <div class="row">
                 <div class="col-md-3">
                     <div class="prodpics">
-                        <div class="carousel-main">
-                            @foreach ($images as $pic)
-                            <?php $idd++; ?>
+                    {{-- Main Carousel --}}
+                    <div class="carousel-main js-flickity">
+                        @foreach ($images as $pic)
                             <div class="carousel-cell">
-                                <a href="#"><img src="{{ asset('pics/'.$pic['link'].'/'.$pic['link'] ) }}" alt="{{$item->name}}"></a>
+                                <img src="{{ asset('pics/'.$pic["link"].'/'.$pic["link"]) }}" alt="{{ $item->name }}">
                             </div>
-                            @endforeach
-                        </div>
-                        <div class="carousel-nav">
-                            @foreach ($images as $pic)
-                            <?php $idd++; ?>
-                            <div class="carousel-cell">
-                                <a href="#"><img src="{{ asset('pics/'.$pic['link'].'/'.$pic['link'] ) }}" style="max-width:100%;"  alt="{{$item->name}}"></a>
+                        @endforeach
+                    </div>
+                    
+                    {{-- Nav Carousel --}}
+                    <div class="carousel-nav js-flickity">
+                        @foreach ($images as $pic)
+                            <div class="carousel-cell" style="width: 90px !important;">
+                                <img src="{{ asset('pics/'.$pic["link"].'/'.$pic["link"]) }}" alt="{{ $item->name }}">
                             </div>
-                            @endforeach
-                        </div>
+                        @endforeach
+                    </div>
+
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -59,12 +119,17 @@
                         {{$item->explain}}
                       </p>
                       <div class="pricebar">
+                        @isset ($item->helpprice)
+                        <p class="orgprice"><?php echo number_format($item->price) ?> تومان</p>
+                        <p class="finprice"><?php echo number_format($item->helpprice) ?> <span>تومان</span></p>
+                        @else
                         @if ($item->discount != NULL)
                             <p class="orgprice"><?php echo number_format($item->price) ?> تومان</p>
                             <p class="finprice"><?php echo number_format($item->discount) ?> <span>تومان</span></p>
                         @else
                             <p class="finprice"><?php echo number_format($item->price) ?> <span>تومان</span></p>
                         @endif
+                        @endisset
                       </div>
                     </div>
                     <div class="prodline"></div>
@@ -78,6 +143,8 @@
                         <rect x="5.25" y="14.25" width="31.5" height="3.16667" fill="white"/>
                         </svg>
                         سفارش و ارسال</a>
+                        
+                    
                         <a href="#" data-toggle="modal" data-target="#modal-success{{ $item->id }}" class="supportbtn">
                           <svg width="42" height="38" viewBox="0 0 42 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5.25 13.5C5.25 11.6144 5.25 10.6716 5.83579 10.0858C6.42157 9.5 7.36438 9.5 9.25 9.5H32.75C34.6356 9.5 35.5784 9.5 36.1642 10.0858C36.75 10.6716 36.75 11.6144 36.75 13.5V24.5C36.75 26.3856 36.75 27.3284 36.1642 27.9142C35.5784 28.5 34.6356 28.5 32.75 28.5H9.25C7.36438 28.5 6.42157 28.5 5.83579 27.9142C5.25 27.3284 5.25 26.3856 5.25 24.5V13.5Z" fill="#222852" fill-opacity="0.25"/>
@@ -103,16 +170,23 @@
                                                     <div class="col-md-9">
                                                       شما می توانید برای حمایت از کتاب مورد نظر خود مبالغ زیر را انتخاب کرده و یا مبلغ مورد نظر خود را نوشته و پرداخت کنید
                                                       <br>
-                                                      حداکثر مقدار قابل کمک برای این کتاب
-                                                      @php 
-                                                      if(isset($item->helpprice)){
-                                                        $helpprice=$item->helpprice * $item->inventory;
-                                                      }
-                                                      else{
-                                                        $helpprice=$item->price * $item->inventory;
-                                                      }                                      
-                                                      @endphp
-                                                      <?php echo number_format($helpprice); ?> تومان
+                                                      <p style="color:red;">
+                                                          حداکثر مقدار قابل کمک برای این کتاب
+                                                          @php 
+                                                          if(isset($item->helpprice)){
+                                                            $helpprice=$item->helpprice * $item->inventory;
+                                                          }
+                                                          else{
+                                                              if($item->discount != NULL){
+                                                                $helpprice=$item->discount * $item->inventory;
+                                                              }    
+                                                              else{
+                                                                $helpprice=$item->price * $item->inventory;  
+                                                              }
+                                                          }
+                                                          @endphp
+                                                         <?php echo number_format($helpprice); ?> تومان
+                                                      </p>
                                                       <form  action="{{route('help')}}" method="post" style="margin-top:15px">
                                                         @isset(Auth::user()->id)
                                                         <input type="hidden" name="product_id" value="{{ $item->id }}" >
@@ -129,8 +203,9 @@
                                                         <label for="20000000">دومیلیون تومان</label><br>
                                                         <input type="radio" style="margin-right: 5px;" id="amntother" name="price1" value="">
                                                         <label for="amntother">مبالغ دیگر</label>
-                                                        <p>همچنین شما می توانید مبلغ مورد نظر خود را به ریال وارد کرده و پرداخت کنید</p>
-                                                        <input type="number" class="form-control" id="otherAmount"  name="price" value="" placeholder="مبلغ مورد نظر خود را به ریال وارد کنید">
+                                                        <p>همچنین شما می توانید مبلغ مورد نظر خود را به تومان وارد کرده و پرداخت کنید</p>
+                                                        <input type="number" class="form-control" id="otherAmount"  name="price" value="" placeholder="مبلغ مورد نظر خود را به تومان وارد کنید">
+                                                        <small id="error-msg" style="color:red; display:none;">مبلغ وارد شده بیشتر از موجودی کل است.</small>
                                                         <script>  
                                                             function addValueToRadioBtn() {
                                                                 if (document.getElementById("amntother").checked == true){
@@ -147,7 +222,47 @@
                                                                 }
                                                                 //added an alert box just to test that the value has been updated
                                                                 
-                                                            }                                                 
+                                                            }    
+                                                            
+                                                            document.addEventListener('DOMContentLoaded', function () {
+                                                              const form = document.querySelector('form[action="{{route('help')}}"]');
+                                                              const otherAmountInput = document.getElementById('otherAmount');
+                                                              const maxValue = parseInt(document.querySelector('input[name="maxvalue"]').value, 10);
+                                                              const errorMsg = document.getElementById('error-msg');
+                                                              const submitBtn = document.getElementById('submit-btn');
+                                                            
+                                                              function validateAmount() {
+                                                                const customAmount = parseInt(otherAmountInput.value, 10);
+                                                            
+                                                                if (!isNaN(customAmount) && customAmount > maxValue) {
+                                                                  errorMsg.style.display = 'block';
+                                                                  submitBtn.disabled = true;
+                                                                } else {
+                                                                  errorMsg.style.display = 'none';
+                                                                  submitBtn.disabled = false;
+                                                                }
+                                                              }
+                                                            
+                                                              // مقدار رادیو رو داخل input بریز و بررسی کن
+                                                              window.addValueToRadioBtn = function () {
+                                                                const checkedRadio = document.querySelector('input[name="price1"]:checked');
+                                                                if (checkedRadio) {
+                                                                  otherAmountInput.value = checkedRadio.value;
+                                                                  validateAmount(); // بررسی انجام بشه بعد از تغییر مقدار
+                                                                }
+                                                              };
+                                                            
+                                                              form.addEventListener('submit', function (e) {
+                                                                const customAmount = parseInt(otherAmountInput.value, 10);
+                                                                if (!isNaN(customAmount) && customAmount > maxValue) {
+                                                                  e.preventDefault();
+                                                                }
+                                                              });
+                                                            
+                                                              otherAmountInput.addEventListener('input', validateAmount);
+                                                            
+                                                              validateAmount(); // بررسی اولیه
+                                                            });
                                                         </script>
                                                         @else
                                                             <p class="alert alert-warning">شما باید برای حمایت از کتاب در سایت ثبت نام کرده باشید</p>
@@ -160,7 +275,7 @@
                                                                 @foreach ($images as $pic)
                                                                 <?php $idd++; ?>
                                                                 <div class="carousel-cell">
-                                                                    <a href="#"><img src="{{ asset('pics/'.$pic['link'].'/'.$pic['link'] ) }}" alt="{{$item->name}}"></a>
+                                                                    <a ><img src="{{ asset('pics/'.$pic['link'].'/'.$pic['link'] ) }}" alt="{{$item->name}}"></a>
                                                                 </div>
                                                                 @endforeach
                                                             </div>
@@ -168,7 +283,7 @@
                                                                 @foreach ($images as $pic)
                                                                 <?php $idd++; ?>
                                                                 <div class="carousel-cell">
-                                                                    <a href="#"><img src="{{ asset('pics/'.$pic['link'].'/'.$pic['link'] ) }}" style="max-width:100%;"  alt="{{$item->name}}"></a>
+                                                                    <a><img src="{{ asset('pics/'.$pic['link'].'/'.$pic['link'] ) }}" style="max-width:100%;"  alt="{{$item->name}}"></a>
                                                                 </div>
                                                                 @endforeach
                                                             </div>
@@ -179,7 +294,7 @@
                                         </div>
                                         @isset(Auth::user()->id)
                                         <div class="modal-footer justify-content-between">
-                                              <button type="submit" class="btn btn-success btn-lg">حمایت از کتاب </button>
+                                              <button type="submit" id="submit-btn" class="btn btn-success btn-lg">حمایت از کتاب </button>
                                         </div>
                                         @endisset
                                       </form>
@@ -191,11 +306,25 @@
                                   </div>
                       <div class="stocks">
                         <p>موجودی: {{$item->inventory}}عدد</p>
-                        <div class="counter">
-                          <span class="down" onclick="decreaseCount(event, this)">-</span>
-                          <input type="text" value="1">
-                          <span class="up" onclick="increaseCount(event, this)">+</span>
-                        </div>
+                        <form id="addcart{{$item->id}}" action="{{route('cart.store')}}" style="margin: auto; margin-left: 0px; display:inline-flex;" method="post" >
+                            <div class="counter">
+                                <span class="down" onclick="decreaseCount(event, this)">-</span>
+                                <input type="text" name="number" value="1">
+                                <span class="up" onclick="increaseCount(event, this)">+</span>
+                            </div>
+                            @csrf 
+                            <input type="hidden" name="id" value="{{$item->id}}" > 
+                            <input type="hidden" name="name" value="{{$item->name}}" >
+                            @isset ($item->helpprice)
+                                <input type="hidden" name="price" value="{{$item->helpprice}}"> 
+                            @else
+                            @if ($item->discount != NULL)
+                                <input type="hidden" name="price" value="{{$item->discount}}" > 
+                            @else
+                                <input type="hidden" name="price" value="{{$item->price}}" > 
+                            @endif
+                            @endisset
+                        </form>
                       </div>
                     </div>
                 </div>

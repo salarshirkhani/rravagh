@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Product;
 use App\likes;
 use App\Category;
+use App\SliderItem;
 
 class CartController extends Controller
 {
@@ -15,6 +16,7 @@ class CartController extends Controller
     public function index (){
         return view('cart',[
             'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
+             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
     }
 

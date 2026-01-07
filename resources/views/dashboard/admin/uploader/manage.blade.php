@@ -55,6 +55,7 @@
                                 <th>#</th>
                                 <th>آدرس</th>
                                 <th>تصویر</th>
+                                <th>iframe</th>
                                 <th>حذف</th>                               
                             </tr>
                             </thead>
@@ -62,12 +63,31 @@
                              @foreach($posts as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>https://rravagh.com/ravaghh/pics/{{ $item->link }}/{{ $item->link }}</td>
+                                    <td>https://rravagh.com/pics/{{ $item->link }}/{{ $item->link }}</td>
                                     <td><img src="{{ asset('pics/'.$item['link'].'/'.$item['link'] ) }}" style="width:120px;" ></td>
+                                    <td>
+                                    @php $source=asset('pics/'.$item['link'].'/'.$item['link'] ); @endphp
+                                    <input id="text{{$item->id}}" type="text" value='<video  height="500" style="width:100%;" controls><source src="{{ $source }}" type="video/mp4"></video>'  style=" border: none;background: #e1e1e1;padding: 7px;border-radius: 6px;" readonly/>
+                                    <a href="#" onclick="myFunction{{$item->id}}()" id="text{{$item->id}}"  class="btn btn-primary" >کپی کردن iframe</a>                 
+                                    </td>
                                     <td>
                                     <a href="{{route('dashboard.admin.uploader.deleteupload',['id'=>$item->id])}}" class="delete_post" ><i class="fa fa-fw fa-eraser"></i></a>                 
                                     </td>
+                            <script>
+                                    function myFunction{{$item->id}}() {
+                                      // Get the text field
+                                      var copyText = document.getElementById("text{{$item->id}}");
+                                    
+                                    
+                                       // Copy the text inside the text field
+                                      navigator.clipboard.writeText(copyText.value);
+                                    
+                                      // Alert the copied text
+                                      alert("کد ای فریم کپی شد");
+                                    }
+                            </script>
                                 </tr>
+
                              @endforeach
                                 </tbody>
                                 <tfoot>
@@ -75,6 +95,7 @@
                                     <th>#</th>
                                     <th>آدرس</th>
                                     <th>تصویر</th>
+                                    <th>iframe</th>
                                     <th>حذف</th>      
                                 </tr>
                                 </tfoot>
@@ -86,4 +107,5 @@
                 </x-card-footer>      
         </x-card>
     </div>
+
     @endsection

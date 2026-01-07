@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\movies;
 use App\Category;
 use App\Product;
 use App\Post;
@@ -14,6 +14,7 @@ use App\Upload;
 use App\code;
 use App\subscribe;
 use App\color;
+use App\page;
 use App\promote;
 use App\product_tag;
 use App\post_tag;
@@ -52,7 +53,7 @@ class FrontController extends Controller
     public function questions() {
 
         return view('questions',[
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
@@ -61,7 +62,7 @@ class FrontController extends Controller
     public function rules() {
 
         return view('rules',[
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
@@ -70,7 +71,7 @@ class FrontController extends Controller
     public function security() {
 
         return view('security',[
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
@@ -83,7 +84,7 @@ class FrontController extends Controller
         $posts = Post::where('title', 'LIKE', '%'. $this->escape_like($data['q']) . '%')->paginate(8);
 
         return view('search',['posts' => $posts,
-        'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+        'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
         'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
     }
@@ -101,7 +102,7 @@ class FrontController extends Controller
               $subscribe =NULL ;
       
             return view('productsearch',['products' => $posts,
-                'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->orderBy('priority', 'desc')->where('type','product')->get(),
+                'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
                 'writers' => color::orderBy('created_at', 'desc')->get(),
 				'subscribe' =>  $subscribe, 
                 'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
@@ -120,7 +121,7 @@ class FrontController extends Controller
             else
               $subscribe =NULL ;
             return view('tags',['products' => $posts,
-                'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->orderBy('priority', 'desc')->where('type','product')->get(),
+                'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
                 'writers' => color::orderBy('created_at', 'desc')->get(),
 				'subscribe' =>  $subscribe, 
                 'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
@@ -135,7 +136,7 @@ class FrontController extends Controller
 
             $posts = post_tag::where('name', 'LIKE', '%'. $this->escape_like($request['q']) . '%')->paginate(8);
             return view('posttags',['posts' => $posts,
-                'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->get(),
+                'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
                 'writers' => color::orderBy('created_at', 'desc')->get(),
                 'tag'=>$request['q'],
                 'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
@@ -158,10 +159,11 @@ class FrontController extends Controller
 
         return view('welcome',[
         'products' => Product::orderBy('created_at', 'desc')->get(),
-        'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+        'categories' => Category::with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
         'brands' => brand::orderBy('created_at', 'desc')->get(),     
         'subscribe' =>  $subscribe, 
         'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+        'movies' => movies::orderBy('created_at', 'desc')->where('category','19')->get(),
         ]);
 
     }
@@ -178,7 +180,7 @@ class FrontController extends Controller
         else
            $promote =NULL ;
         return view('promotion',[
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
           	'subscribe' => $subscribe,
             'promote' => $promote,
             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
@@ -189,7 +191,7 @@ class FrontController extends Controller
     public function contact() {
 
         return view('contact',[
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
@@ -198,7 +200,7 @@ class FrontController extends Controller
     public function about() {
 
         return view('about',[
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
@@ -213,7 +215,7 @@ class FrontController extends Controller
 
         return view('subscription',[
             'posts' => subscription::orderBy('created_at', 'desc')->get(),
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
             'subscribe' => $subscribe,
             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
@@ -225,7 +227,7 @@ class FrontController extends Controller
         if(Cart::count() > 0 && Auth::check()){
 
             return view('checkout',[ 
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
             'price'=> $data->price ,
             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
             ])->with('info' , 'لطفا اطلاعات خود را دقیق وارد کنید');
@@ -249,7 +251,7 @@ class FrontController extends Controller
             'item' => $item,
             'posts' => Post::orderBy('created_at', 'desc')->LIMIT(3)->get(),
             'comments' => comment::where('post_id',$id)->orderBy('created_at', 'desc')->get() ,
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
             'writers' => color::orderBy('created_at', 'desc')->get(),
             'tags' => post_tag::where('post_id',$item->id)->orderBy('created_at', 'desc')->get(),
             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
@@ -257,11 +259,31 @@ class FrontController extends Controller
 
     }
 
+    public function page($id) {
+        $item=page::find($id);
+        SEOTools::setTitle(' رواق -'.$item->title);
+        SEOTools::setDescription($item->explain);
+        SEOTools::opengraph()->setUrl('http://rravagh.com');
+        SEOTools::setCanonical('http://rravagh.com');
+        SEOTools::opengraph()->addProperty('type', 'articles');
+        SEOTools::twitter()->setSite('@rravagh');
+        return view('single-post',[
+            'item' => $item,
+            'posts' => Post::orderBy('created_at', 'desc')->LIMIT(3)->get(),
+            'comments' => comment::where('post_id',$id)->orderBy('created_at', 'desc')->get() ,
+            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','post')->orderBy('priority', 'desc')->get(),
+            'writers' => color::orderBy('created_at', 'desc')->get(),
+            'tags' => post_tag::where('post_id',$item->id)->orderBy('created_at', 'desc')->get(),
+            'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+        ]);
+
+    }
+    
     public function blog() {
 
         return view('blog',[
             'posts' => Post::orderBy('created_at', 'desc')->get(),
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
             'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
         ]);
 
@@ -277,7 +299,7 @@ class FrontController extends Controller
         else
           $subscribe =NULL ;
         return view('products',[
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
             'products' => Product::where('lovely',NULL)->orderBy('created_at', 'desc')->paginate('16'),
             'brands' => brand::orderBy('created_at', 'desc')->get(),
             'writers' => color::orderBy('created_at', 'desc')->get(),
@@ -298,7 +320,7 @@ class FrontController extends Controller
         else
           $subscribe =NULL ;
         return view('discountable',[
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
             'products' => Product::where('discountable','1')->orderBy('created_at', 'desc')->paginate('16'),
             'brands' => brand::orderBy('created_at', 'desc')->get(),
             'writers' => color::orderBy('created_at', 'desc')->get(),
@@ -333,7 +355,7 @@ class FrontController extends Controller
             $archive = Product::where('category' , $category->id)->orderBy('price',  $sort)->paginate(16);
             return view('mainproducts',[
                 'category'=>$category,
-                'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->where('type','product')->orderBy('priority', 'desc')->get(),
+                'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
                 'parent' =>$parent,
                 'cat_id' => $category->id,
                 'products' => $products,
@@ -370,7 +392,7 @@ class FrontController extends Controller
         else
           $subscribe =NULL ;
         return view('products',[
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('type','product')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
             'products' => Product::where('lovely',NULL)->where('brand' , $id)->orderBy('created_at', 'desc')->get(),
             'archive' => Product::where('brand' , $id)->orderBy('created_at', 'desc')->paginate(16),
             'brands' => brand::orderBy('created_at', 'desc')->get(),
@@ -397,7 +419,8 @@ class FrontController extends Controller
         else
           $subscribe =NULL ;
         return view('single-product',[
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
+            'categories' => Category::with('allChildren')->where('show','1')->orderBy('priority', 'desc')->get(),
+            'category'=>Category::find($item->category),
             'item' => $item,
             'comments' => $comments ,
             'products' => $related_products,

@@ -20,17 +20,31 @@ use Evryn\LaravelToman\Facades\Toman;
 use Evryn\LaravelToman\CallbackRequest;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
+use App\SliderItem;
+
 class SubscribeController extends Controller
 {
     
     
     public function callbacks() {
-
-        $transaction=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->FIRST();
-        return view('callback',[ 
-            'transaction' => $transaction,
-            'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
-        ]);
+        
+        if (!Auth::check()) {
+             $transaction=transaction::orderBy('id', 'desc')->FIRST();
+             return view('callback',[ 
+                'transaction' => $transaction,
+                'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
+                'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+            ]);
+            
+        }
+        else{
+            $transaction=transaction::orderBy('id', 'desc')->where('user_id' , Auth::user()->id)->FIRST();
+            return view('callback',[ 
+                'transaction' => $transaction,
+                'categories' => Category::whereNull('parent_id')->with('allChildren')->get(),
+                'banners' => SliderItem::orderBy('created_at', 'desc')->get(),
+            ]);
+        }
         
     }
     
@@ -55,7 +69,7 @@ class SubscribeController extends Controller
 
             $transaction->save();
 
-            $trans=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
+            $trans=transaction::orderBy('id', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
             
 
                 $order=new subscribe();
@@ -71,7 +85,7 @@ class SubscribeController extends Controller
             $invoice = (new Invoice)->amount($data->input('price'));
             // Purchase and pay the given invoice.
             // You should use return statement to redirect user to the bank page.
-            return Payment::callbackUrl('https://rravagh.com/ravaghh/payment/callbackss?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
+            return Payment::callbackUrl('https://rravagh.com/payment/callbackss?trans='.$trans->id)->purchase($invoice, function($driver, $transactionId) {
                 $trans=transaction::orderBy('created_at', 'desc')->where('user_id' , Auth::user()->id)->where('status' , 'notpaid')->FIRST();
                 $trans->transaction=$transactionId;
                 $trans->save();
@@ -101,18 +115,22 @@ class SubscribeController extends Controller
             $trans->invoice_code=$trans->transaction;
             $transaction=$trans->transaction;
                     $url = "https://ippanel.com/services.jspd";
-
-            $rcpt_nm = array(Auth::user()->mobile, '09372833776');
-            $param = array
-            (
-                'uname' => 'ketabjang',
-                'pass' => 'ketab7976190',
-                'from' => '3000505',
-                'message' => 'اشتراک شما در سایت دیجی ریحان ثبت شد',
-//                'message' => 'تست',
-                'to' => json_encode($rcpt_nm),
-                'op' => 'send'
-            );
+                    
+                    
+            if (Auth::check()) {
+                $rcpt_nm = array(Auth::user()->mobile, '09372833776');
+                $param = array
+                (
+                    'uname' => 'ketabjang',
+                    'pass' => 'ketab7976190',
+                    'from' => '3000505',
+                    'message' => 'اشتراک شما در سایت دیجی ریحان ثبت شد',
+                    //'message' => 'تست',
+                    'to' => json_encode($rcpt_nm),
+                    'op' => 'send'
+                );
+            
+            }
             $order_check=subscribe::where('transaction_id' , $trans->id)->orderBy('created_at', 'desc')->FIRST();
                 $order_check->status='new';
                 $order_check->save();    
